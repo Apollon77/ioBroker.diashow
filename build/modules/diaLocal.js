@@ -20,7 +20,7 @@ async function getPicture(Helper) {
                     CurrentImage = CurrentImages[CurrentImages.indexOf(CurrentImage) + 1];
                 }
             }
-            return { url: CurrentImage, localPath: CurrentImage, isError: false };
+            return { url: `/${Helper.Adapter.namespace}/${CurrentImage}`, localPath: CurrentImage, isError: false };
         }
         return { url: "", localPath: CurrentImage, isError: true };
     }
