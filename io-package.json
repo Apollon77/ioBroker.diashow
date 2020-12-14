@@ -52,8 +52,8 @@
 		"main": "build/main.js",
 		"icon": "diashow.png",
 		"enabled": true,
-		"extIcon": "https://raw.githubusercontent.com/gaudes/ioBroker.diashow/master/admin/diashow.png",
-		"readme": "https://github.com/gaudes/ioBroker.diashow/blob/master/README.md",
+		"extIcon": "https://raw.githubusercontent.com/gaudes/ioBroker.diashow/main/admin/diashow.png",
+		"readme": "https://github.com/gaudes/ioBroker.diashow/blob/main/README.md",
 		"loglevel": "info",
 		"restartAdapters": [
 			"vis"
