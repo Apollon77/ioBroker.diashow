@@ -1,0 +1,94 @@
+{
+	"common": {
+		"name": "diashow",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "Diashow",
+		"titleLang": {
+			"en": "Diashow",
+			"de": "Diashow",
+			"ru": "Diashow",
+			"pt": "Diashow",
+			"nl": "Diashow",
+			"fr": "Diashow",
+			"it": "Diashow",
+			"es": "Diashow",
+			"pl": "Diashow",
+			"zh-cn": "Diashow"
+		},
+		"desc": {
+			"en": "Diashow for VIS from different sources",
+			"de": "Diashow for VIS from different sources",
+			"ru": "Diashow for VIS from different sources",
+			"pt": "Diashow for VIS from different sources",
+			"nl": "Diashow for VIS from different sources",
+			"fr": "Diashow for VIS from different sources",
+			"it": "Diashow for VIS from different sources",
+			"es": "Diashow for VIS from different sources",
+			"pl": "Diashow for VIS from different sources",
+			"zh-cn": "Diashow for VIS from different sources"
+		},
+		"authors": [
+			"Gaudes <ralf@gaudes.net>"
+		],
+		"keywords": [
+			"diashow"
+		],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "build/main.js",
+		"icon": "diashow.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/gaudes/ioBroker.diashow/master/admin/diashow.png",
+		"readme": "https://github.com/gaudes/ioBroker.diashow/blob/master/README.md",
+		"loglevel": "info",
+		"restartAdapters": [
+			"vis"
+		],
+		"localLink": "%web_protocol%://%ip%:%web_port%/vis/edit.html",
+		"mode": "daemon",
+		"type": "visualization",
+		"compact": true,
+		"connectionType": "cloud",
+		"dataSource": "poll",
+		"materialize": true,
+		"dependencies": [
+			{
+				"js-controller": ">=2.0.0"
+			},
+			"vis"
+		]
+	},
+	"native": {
+		"provider": 1,
+		"update_interval": 10,
+		"fs_path": "",
+		"fs_format": 0,
+		"sentry_disable": false
+	},
+	"objects": [],
+	"instanceObjects": [
+		{
+			"_id": "",
+            "type": "meta",
+            "common": {
+                "name": "User files for Diashow",
+                "type": "meta.user"
+            },
+            "native": {}
+		}
+	]
+}
