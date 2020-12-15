@@ -23,7 +23,7 @@ exports.updatePictureList = exports.getPicture = void 0;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const imgsize = __importStar(require("image-size"));
-let CurrentImages = [];
+const CurrentImages = [];
 let CurrentImage = "";
 async function getPicture(Helper) {
     try {

@@ -10,7 +10,7 @@ export interface result{
 	errorText?: string;
 }
 
-let CurrentImages: string[] = [];
+const CurrentImages: string[] = [];
 let CurrentImage = "";
 
 export async function getPicture(Helper: GlobalHelper): Promise<result> {
