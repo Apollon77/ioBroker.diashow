@@ -48,21 +48,21 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 		}
 		// Filter for JPEG or JPG files
 		const CurrentFileList = await fs.readdirSync(Helper.Adapter.config.fs_path);
-		CurrentImages = CurrentFileList.filter(function(file){
+		const CurrentImageList = CurrentFileList.filter(function(file){
 			if (path.extname(file).toLowerCase() === ".jpg" || path.extname(file).toLowerCase() === ".jpeg"){
 				return file;
 			}
 		})
 		// Checking orientation of pictures (landscape or portrait) if configured
 		if (Helper.Adapter.config.fs_format !== 0){
-			for (const ImageIndex in CurrentImages){
-				const ImageSize = await imgsize.imageSize(`${Helper.Adapter.config.fs_path}/${CurrentImages[ImageIndex]}`);
+			for (const ImageIndex in CurrentImageList){
+				const ImageSize = await imgsize.imageSize(`${Helper.Adapter.config.fs_path}/${CurrentImageList[ImageIndex]}`);
 				if (ImageSize.width && ImageSize.height){
-					if (Helper.Adapter.config.fs_format === 1 && ImageSize.width < ImageSize.height){
-						CurrentImages.splice(parseInt(ImageIndex), 1);
+					if ((Helper.Adapter.config.fs_format === 1 && ImageSize.width < ImageSize.height) === true){
+						CurrentImages.push(CurrentImageList[ImageIndex]);
 					}
-					if (Helper.Adapter.config.fs_format === 2 && ImageSize.height < ImageSize.width){
-						CurrentImages.splice(parseInt(ImageIndex), 1);
+					if ((Helper.Adapter.config.fs_format === 2 && ImageSize.height < ImageSize.width) === true){
+						CurrentImages.push(CurrentImageList[ImageIndex]);
 					}
 				}
 			}
