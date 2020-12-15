@@ -58,7 +58,10 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 			for (const ImageIndex in CurrentImages){
 				const ImageSize = await imgsize.imageSize(`${Helper.Adapter.config.fs_path}/${CurrentImages[ImageIndex]}`);
 				if (ImageSize.width && ImageSize.height){
-					if (Helper.Adapter.config.fs_format === 1 && ImageSize.width > ImageSize.height){
+					if (Helper.Adapter.config.fs_format === 1 && ImageSize.width < ImageSize.height){
+						CurrentImages.splice(parseInt(ImageIndex), 1);
+					}
+					if (Helper.Adapter.config.fs_format === 2 && ImageSize.height < ImageSize.width){
 						CurrentImages.splice(parseInt(ImageIndex), 1);
 					}
 				}
