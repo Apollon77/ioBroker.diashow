@@ -11,10 +11,6 @@
 	position: absolute;
 	left: 0px;
 	right: 0px;
-	transition-property: opacity;
-  	transition-duration: 2s;
-  	transition-timing-function: linear;
-  	transition-delay: 0s;
 }
 
 .diashowpicture1{
@@ -23,8 +19,4 @@
 
 .diashowpicturehidden{
 	opacity: 0;
-	transition-property: opacity;
-  	transition-duration: 2s;
-  	transition-timing-function: linear;
-  	transition-delay: 0s;
 }

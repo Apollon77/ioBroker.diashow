@@ -105,12 +105,13 @@ vis.binds["diashow"] = {
 			}, 100);
 		}
 		console.log("Integrating Diashow");
+		let FadeTime = parseInt(data.FadeTime) || 0;
 		function onChange(e, newVal, oldVal) {
 			switch(data.DiashowEffect){
 				case "EffectFade":
-					$('.diashowpicture1').fadeOut(data.FadeTime, function() {
+					$('.diashowpicture1').fadeOut(FadeTime, function() {
                         $('.diashowpicture1').attr("src", newVal).load(function(){
-                    		$('.diashowpicture1').fadeIn(data.FadeTime);
+                    		$('.diashowpicture1').fadeIn(FadeTime);
                         });
 					});
 					break;
@@ -123,11 +124,11 @@ vis.binds["diashow"] = {
 					if ($(".diashowpicture2").css("display") === "none"){
 						$(".diashowpicture2").attr("src", newVal);
 						$(".diashowpicture2").css("z-index", 2);
-						$(".diashowpicture2").show(data.EffectJQuery, data.EffectTransitionStyle, data.FadeTime, function() {$(".diashowpicture1").css("display", "none");} )
+						$(".diashowpicture2").show(data.EffectJQuery, data.EffectTransitionStyle, FadeTime, function() {$(".diashowpicture1").css("display", "none");} )
 					} else{
 						$(".diashowpicture1").attr("src", newVal);
 						$(".diashowpicture2").css("z-index", 0);
-						$(".diashowpicture1").show(data.EffectJQuery, data.EffectTransitionStyle, data.FadeTime, function() {$(".diashowpicture2").css("display", "none");} )
+						$(".diashowpicture1").show(data.EffectJQuery, data.EffectTransitionStyle, FadeTime, function() {$(".diashowpicture2").css("display", "none");} )
 					}
 					break;
 				default:
@@ -138,12 +139,19 @@ vis.binds["diashow"] = {
 		if (data.oid){ 
 			vis.states.bind(data.oid + ".val", onChange);
 		}
+		if (data.DiashowEffect === "EffectFade"){
+			$(".diashowpicture2").css("display", "none");
+		}	
 		if (data.DiashowEffect === "EffectTransition"){
 			$(".diashowpicture2").addClass("diashowpicturehidden");
-			$(".diashowpicturehidden").css("transition-duration", data.FadeTime + "ms");
+			$(".diashowpicturehidden").css("transition-property", "opacity");
+			$(".diashowpicturehidden").css("transition-duration", FadeTime + "ms");
 			$(".diashowpicturehidden").css("transition-timing-function", data.EffectTransitionStyle);
-			$(".diashowpicture").css("transition-duration", data.FadeTime + "ms")
+			$(".diashowpicturehidden").css("transition-delay", "0s");
+			$(".diashowpicture").css("transition-property", "opacity");
+			$(".diashowpicture").css("transition-duration", FadeTime + "ms")
 			$(".diashowpicture").css("transition-timing-function", data.EffectTransitionStyle);
+			$(".diashowpicture").css("transition-delay", "0s");
 		}
 		if (data.DiashowEffect === "EffectJQuery"){
 			$(".diashowpicture2").css("display", "none");
