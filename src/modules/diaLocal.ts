@@ -25,7 +25,7 @@ export async function getPicture(Helper: GlobalHelper): Promise<result> {
 					CurrentImage = CurrentImages[CurrentImages.indexOf(CurrentImage) + 1];
 				}
 			}
-			return {url: `/${Helper.Adapter.namespace}/${CurrentImage}`, localPath: CurrentImage, isError: false};
+			return {url: `${CurrentImage}`, localPath: CurrentImage, isError: false};
 		}
 		return {url: "", localPath: CurrentImage, isError: true};
 	}catch(err){
