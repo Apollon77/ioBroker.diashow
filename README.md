@@ -26,6 +26,8 @@ Folgende Quellen stehen aktuell zur Verfügung:
 
 Zur Darstellung in VIS stellt der Adapter ein Widget zur Verfügung.
 Dieses bietet auch Funktionen für Effekt beim Bildwechsel, beispielsweise sanftes Ein- und Ausblenden.
+Zusätzlich kann ein Timeout eingestellt werden. Sofern auf anderen View im Projekt keine Aktion für das eingestellte Timeout erfolgt ist,
+wird zur View mit der Diashow gewechselt. Durck Klicken des Bilds wird entweder zurück zur letzten Ansicht oder zu einer eingestellten Ansicht gewechselt.
 
 ### Konfiguration
 In den Einstellungen des Adapters wird die Quelle der Bilder ausgewählt, außerdem das Intervall für den Wechsel der Bilder, beispielsweise 10 Sekunden.
@@ -35,17 +37,28 @@ Bei Auswahl der Quelle "Dateisystem" kann dann noch der Pfad im Dateisystem ausg
 ### VIS-Widget
 Das Widget ist in der Kategorie "diashow" enthalten.
 
+Das Widget sollte in eine eigene View integriert werden. Hierdurch lässt sich der automatische Start der Diashow nutzen.
+
 Folgende Einstellungen sind möglich:
 
 * Object-ID: Hier muss der vom Adapter erzeugte Datenpunkt ausgewählt werden, beispielsweise "diashow.0.picture"
-* DiashowEffect: Als Effekt kann zwischen folgenden gewählt werden:
-	* "Kein"
-	* "Fade": Einfaches Verblassen und Erscheinen
-	* "Transition": Überblenden
-	* "jQuery-Effekt": Diverse jQuery-Effekte, beispielsweise Rolladen
-* Übergangsphase: Zeit in Millisekunden für den Effekt, gute Werte sind 500 oder 1000ms
-* Transition Style: Stil für "Transistion" und "jQuery-Effekt"
-* jQuery-Effekt: Gewünschter jQuery-Effekt
+* Abschnitt "Effekt"
+	* DiashowEffect: Als Effekt kann zwischen folgenden gewählt werden:
+		* "Kein"
+		* "Fade": Einfaches Verblassen und Erscheinen
+		* "Transition": Überblenden
+		* "jQuery-Effekt": Diverse jQuery-Effekte, beispielsweise Rolladen
+	* Übergangsphase: Zeit in Millisekunden für den Effekt, gute Werte sind 500 oder 1000ms
+	* Transition Style: Stil für "Transistion" und "jQuery-Effekt"
+	* jQuery-Effekt: Gewünschter jQuery-Effekt
+* Abschnitt "Automatischer Diashow-Start"
+	* Aktivierung des automatischen Starts
+	* Timeout: Nach welcher Zeit ohne Aktion auf die Diashow-View gewechselt wird
+	* Ziel beim Klicken:
+		* Zuletzt verwendete Ansicht
+		* Konfigurierte Ansicht (siehe nächster Einstellung)
+		* Kein, falls beispielsweise ein eigener Button integriert werden soll
+	* Zielansicht: Aufzurufende Ansicht beim Verlassen der Diashow
 
 ## <a name="english"></a>Diashow Adapter for ioBroker
 This Adapter for ioBroker provides a Diashow for VIS.
@@ -57,8 +70,9 @@ The following Sources can actually be used:
 * Pictures from file system path
 
 The Adapter provides a Widget for Presentation in VIS, which offers effects on picture change, for example smooth fade-out and fade-in.
+Additionally a timeout can be configured. When on other views in the same VIS project no actions for the defined timeout occured, the view with the Diashow will be started. With a click on the picture it changes back to the last view or to a predefined view.
 
-## Configuration
+### Configuration
 In the Adapter settings the picture source can be choosen. Although the interval for picture change.
 
 When source "File system" is selected, the path can be entered and the format (landscape or portrait) of the pictures to be shown.
@@ -66,106 +80,28 @@ When source "File system" is selected, the path can be entered and the format (l
 ### VIS-Widget
 The Widget can be found in category "diashow".
 
+The widget should be integrated in an own view, so the automatic start of the Diashow can be used.
+
 The following configuration options exist:
 
 * Object-ID: The ioBroker object created by the adapter must be provided, for example "diashow.0.picture"
-* DiashowEffect: The following options are available:
-	* "None"
-	* "Fade": Simple fade-out and fade-in
-	* "Transition": fade-over
-	* "jQuery-Effekt": Different jQuery effects, for example "blind"
-* Transition period: Time in miliseconds for the effect, 500 or 1000 are recommended values
-* Transition style: Style for "Transistion" und "jQuery-Effect"
-* jQuery-Effect: Desired effect
-
-
-
-**Tests:** 
-
-## diashow adapter for ioBroker
-
-Diashow for VIS from different sources
-
-## Developer manual
-This section is intended for the developer. It can be deleted later
-
-### Getting started
-
-You are almost done, only a few steps left:
-1. Create a new repository on GitHub with the name `ioBroker.diashow`
-1. Initialize the current folder as a new git repository:  
-	```bash
-	git init
-	git add .
-	git commit -m "Initial commit"
-	```
-1. Link your local repository with the one on GitHub:  
-	```bash
-	git remote add origin https://github.com/gaudes/ioBroker.diashow
-	```
-
-1. Push all files to the GitHub repo:  
-	```bash
-	git push origin master
-	```
-1. Add a new secret under https://github.com/gaudes/ioBroker.diashow/settings/secrets. It must be named `AUTO_MERGE_TOKEN` and contain a personal access token with push access to the repository, e.g. yours. You can create a new token under https://github.com/settings/tokens.
-
-1. Head over to [src/main.ts](src/main.ts) and start programming!
-
-### Best Practices
-We've collected some [best practices](https://github.com/ioBroker/ioBroker.repositories#development-and-coding-best-practices) regarding ioBroker development and coding in general. If you're new to ioBroker or Node.js, you should
-check them out. If you're already experienced, you should also take a look at them - you might learn something new :)
-
-### Scripts in `package.json`
-Several npm scripts are predefined for your convenience. You can run them using `npm run <scriptname>`
-| Script name | Description |
-|-------------|-------------|
-| `build:ts` | Compile the TypeScript sources. |
-| `watch:ts` | Compile the TypeScript sources and watch for changes. |
-| `watch` | Shortcut for `npm run watch:ts` |
-| `test:ts` | Executes the tests you defined in `*.test.ts` files. |
-| `test:package` | Ensures your `package.json` and `io-package.json` are valid. |
-| `test:unit` | Tests the adapter startup with unit tests (fast, but might require module mocks to work). |
-| `test:integration` | Tests the adapter startup with an actual instance of ioBroker. |
-| `test` | Performs a minimal test run on package files and your tests. |
-| `check` | Performs a type-check on your code (without compiling anything). |
-| `lint` | Runs `ESLint` to check your code for formatting errors and potential bugs. |
-
-### Writing tests
-When done right, testing code is invaluable, because it gives you the 
-confidence to change your code while knowing exactly if and when 
-something breaks. A good read on the topic of test-driven development 
-is https://hackernoon.com/introduction-to-test-driven-development-tdd-61a13bc92d92. 
-Although writing tests before the code might seem strange at first, but it has very 
-clear upsides.
-
-The template provides you with basic tests for the adapter startup and package files.
-It is recommended that you add your own tests into the mix.
-
-### Publishing the adapter
-Since you have chosen GitHub Actions as your CI service, you can 
-enable automatic releases on npm whenever you push a new git tag that matches the form 
-`v<major>.<minor>.<patch>`. The necessary steps are described in `.github/workflows/test-and-release.yml`.
-
-To get your adapter released in ioBroker, please refer to the documentation 
-of [ioBroker.repositories](https://github.com/ioBroker/ioBroker.repositories#requirements-for-adapter-to-get-added-to-the-latest-repository).
-
-### Test the adapter manually on a local ioBroker installation
-In order to install the adapter locally without publishing, the following steps are recommended:
-1. Create a tarball from your dev directory:  
-	```bash
-	npm pack
-	```
-1. Upload the resulting file to your ioBroker host
-1. Install it locally (The paths are different on Windows):
-	```bash
-	cd /opt/iobroker
-	npm i /path/to/tarball.tgz
-	```
-
-For later updates, the above procedure is not necessary. Just do the following:
-1. Overwrite the changed files in the adapter directory (`/opt/iobroker/node_modules/iobroker.diashow`)
-1. Execute `iobroker upload diashow` on the ioBroker host
+* Category "Effect"
+	* DiashowEffect: The following options are available:
+		* "None"
+		* "Fade": Simple fade-out and fade-in
+		* "Transition": fade-over
+		* "jQuery-Effekt": Different jQuery effects, for example "blind"
+	* Transition period: Time in miliseconds for the effect, 500 or 1000 are recommended values
+	* Transition style: Style for "Transistion" und "jQuery-Effect"
+	* jQuery-Effect: Desired effect
+* Category "Automatic Diashow start"
+	* Enable automatic start
+	* Timeout: After which time in seconds of inactivity on other views the Diashow will be started
+	* Target on click:
+		* Last used view
+		* Configured view (see next setting)
+		* None, for example when integrating another widget therefore
+	* Target view: View to show when leaving Diashow
 
 ## Changelog
 <!--
