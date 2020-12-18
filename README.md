@@ -14,7 +14,7 @@
 
 [English description](#english)
 
-![Demo](doc/img/demo.gif)
+![Demo](docs/img/demo.gif)
 
 ## <a name="deutsch"></a>Diashow Adapter für ioBroker
 Dieser Adapter für ioBroker stellt eine Diashow für VIS zur Verfügung.
