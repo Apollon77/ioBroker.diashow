@@ -29,6 +29,7 @@ const global_helper_1 = require("./modules/global-helper");
 const diaBing = __importStar(require("./modules/diaBing"));
 const diaLocal = __importStar(require("./modules/diaLocal"));
 const diaFS = __importStar(require("./modules/diaFS"));
+const diaSyno = __importStar(require("./modules/diaSynology"));
 let Helper;
 const MsgErrUnknown = "Unknown Error";
 //#endregion
@@ -55,8 +56,6 @@ class Diashow extends utils.Adapter {
             Helper = new global_helper_1.GlobalHelper(this);
             // Starting updatePictureStoreTimer action
             await this.updatePictureStoreTimer();
-            // Starting updateCurrentPictureTimer action
-            this.updateCurrentPictureTimer();
         }
         catch (err) {
             Helper.ReportingError(err, MsgErrUnknown, "onReady");
@@ -95,6 +94,9 @@ class Diashow extends utils.Adapter {
                 case 3:
                     updatePictureStoreResult = await diaFS.updatePictureList(Helper);
                     break;
+                case 4:
+                    updatePictureStoreResult = await diaSyno.updatePictureList(Helper);
+                    break;
             }
         }
         catch (err) {
@@ -110,6 +112,10 @@ class Diashow extends utils.Adapter {
                 this.tUpdatePictureStoreTimeout = setTimeout(() => {
                     this.updatePictureStoreTimer();
                 }, (this.config.update_interval * 60000)); // Update every minute if error
+            }
+            if (updatePictureStoreResult) {
+                // Starting updateCurrentPictureTimer action
+                this.updateCurrentPictureTimer();
             }
         }
         catch (err) {
@@ -146,6 +152,13 @@ class Diashow extends utils.Adapter {
                     if (CurrentPictureResultFS.picture !== "") {
                         CurrentPicture = CurrentPictureResultFS.picture;
                         Helper.ReportingInfo("Debug", "FileSystem", `Set picture to ${CurrentPictureResultFS.localPath}`);
+                    }
+                    break;
+                case 4:
+                    const CurrentPictureResultSyno = await diaSyno.getPicture(Helper);
+                    if (CurrentPictureResultSyno.picture !== "") {
+                        CurrentPicture = CurrentPictureResultSyno.picture;
+                        Helper.ReportingInfo("Debug", "Synology", `Set picture to ${CurrentPictureResultSyno.localPath}`);
                     }
                     break;
             }

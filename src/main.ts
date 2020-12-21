@@ -9,6 +9,7 @@ import {GlobalHelper} from "./modules/global-helper";
 import * as diaBing from "./modules/diaBing";
 import * as diaLocal from "./modules/diaLocal";
 import * as diaFS from "./modules/diaFS";
+import * as diaSyno from "./modules/diaSynology"
 
 let Helper: GlobalHelper;
 const MsgErrUnknown = "Unknown Error";
@@ -37,9 +38,6 @@ class Diashow extends utils.Adapter {
 
 			// Starting updatePictureStoreTimer action
 			await this.updatePictureStoreTimer();
-
-			// Starting updateCurrentPictureTimer action
-			this.updateCurrentPictureTimer();
 		}catch(err){
 			Helper.ReportingError(err, MsgErrUnknown, "onReady");
 		}
@@ -84,6 +82,9 @@ class Diashow extends utils.Adapter {
 				case 3:
 					updatePictureStoreResult = await diaFS.updatePictureList(Helper);
 					break;
+				case 4:
+					updatePictureStoreResult = await diaSyno.updatePictureList(Helper);
+					break;
 			}
 		}catch(err){
 			Helper.ReportingError(err, MsgErrUnknown, "updatePictureStoreTimer", "Call Timer Action");
@@ -97,6 +98,10 @@ class Diashow extends utils.Adapter {
 				this.tUpdatePictureStoreTimeout = setTimeout(() => {
 					this.updatePictureStoreTimer();
 				}, (this.config.update_interval * 60000)); // Update every minute if error
+			}
+			if (updatePictureStoreResult){
+				// Starting updateCurrentPictureTimer action
+				this.updateCurrentPictureTimer();
 			}
 		}catch(err){
 			Helper.ReportingError(err, MsgErrUnknown, "updatePictureStoreTimer", "Set Timer");
@@ -132,6 +137,13 @@ class Diashow extends utils.Adapter {
 					if (CurrentPictureResultFS.picture !== ""){
 						CurrentPicture = CurrentPictureResultFS.picture;
 						Helper.ReportingInfo("Debug", "FileSystem", `Set picture to ${CurrentPictureResultFS.localPath}`)
+					}
+					break;
+				case 4:
+					const CurrentPictureResultSyno: diaSyno.result = await diaSyno.getPicture(Helper);
+					if (CurrentPictureResultSyno.picture !== ""){
+						CurrentPicture = CurrentPictureResultSyno.picture;
+						Helper.ReportingInfo("Debug", "Synology", `Set picture to ${CurrentPictureResultSyno.localPath}`)
 					}
 					break;
 			}
