@@ -28,7 +28,7 @@ export async function getPicture(Helper: GlobalHelper): Promise<result> {
 					CurrentImage = CurrentImages[CurrentImages.indexOf(CurrentImage) + 1];
 				}
 			}
-			const PicContent = await fs.readFileSync(`${Helper.Adapter.config.fs_path}/${CurrentImage}`);
+			const PicContent = await fs.readFileSync(CurrentImage);
 			const PicContentB64 = PicContent.toString("base64");
 			return {picture: `data:image/jpeg;base64,${PicContentB64}`, localPath: `${Helper.Adapter.config.fs_path}/${CurrentImage}`, isError: false};
 		}
@@ -47,7 +47,7 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 			return false;
 		}
 		// Filter for JPEG or JPG files
-		const CurrentFileList = await fs.readdirSync(Helper.Adapter.config.fs_path);
+		const CurrentFileList = await getAllFiles(Helper.Adapter.config.fs_path);
 		const CurrentImageList = CurrentFileList.filter(function(file){
 			if (path.extname(file).toLowerCase() === ".jpg" || path.extname(file).toLowerCase() === ".jpeg"){
 				return file;
@@ -56,12 +56,12 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 		// Checking orientation of pictures (landscape or portrait) if configured
 		if (Helper.Adapter.config.fs_format !== 0){
 			for (const ImageIndex in CurrentImageList){
-				const ImageSize = await imgsize.imageSize(`${Helper.Adapter.config.fs_path}/${CurrentImageList[ImageIndex]}`);
+				const ImageSize = await imgsize.imageSize(CurrentImageList[ImageIndex]);
 				if (ImageSize.width && ImageSize.height){
-					if ((Helper.Adapter.config.fs_format === 1 && ImageSize.width < ImageSize.height) === true){
+					if ((Helper.Adapter.config.fs_format === 1 && ImageSize.width > ImageSize.height) === true){
 						CurrentImages.push(CurrentImageList[ImageIndex]);
 					}
-					if ((Helper.Adapter.config.fs_format === 2 && ImageSize.height < ImageSize.width) === true){
+					if ((Helper.Adapter.config.fs_format === 2 && ImageSize.height > ImageSize.width) === true){
 						CurrentImages.push(CurrentImageList[ImageIndex]);
 					}
 				}
@@ -79,4 +79,17 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 		Helper.ReportingError(err, "Unknown Error", "Filesystem", "updatePictureList");
 		return false;
 	}
+}
+
+async function getAllFiles(dirPath: string, _arrayOfFiles: string[] = []): Promise<string[]> {
+	const files = await fs.readdirSync(dirPath);
+	_arrayOfFiles = _arrayOfFiles || [];
+	files.forEach(async function(file) {
+		if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+			_arrayOfFiles = await getAllFiles(dirPath + "/" + file, _arrayOfFiles);
+	  	} else {
+			_arrayOfFiles.push(path.join(dirPath, "/", file));
+	  	}
+	})
+	return _arrayOfFiles;
 }
