@@ -24,6 +24,7 @@ Folgende Quellen stehen aktuell zur Verfügung:
 * Die letzten acht täglichen Bilder von Bing.com
 * Via VIS-Dateimanager hochgeladene Bilder
 * Bilder aus beliebigem Pfad im Dateisystem
+* Bilder von Synology PhotoStation
 
 Zur Darstellung in VIS stellt der Adapter ein Widget zur Verfügung.
 Dieses bietet auch Funktionen für Effekt beim Bildwechsel, beispielsweise sanftes Ein- und Ausblenden.
@@ -34,6 +35,8 @@ wird zur View mit der Diashow gewechselt. Durck Klicken des Bilds wird entweder 
 In den Einstellungen des Adapters wird die Quelle der Bilder ausgewählt, außerdem das Intervall für den Wechsel der Bilder, beispielsweise 10 Sekunden.
 
 Bei Auswahl der Quelle "Dateisystem" kann dann noch der Pfad im Dateisystem ausgewählt werden, außerdem das Format (Hoch- oder Querformat) der anzuzeigenden Bilder.
+
+Bei Auswahl der Quelle "Synology PhotoStation" muss die IP-Adresse oder der Hostname sowie Benutzername und Passwort angegeben werden.
 
 ### VIS-Widget
 Das Widget ist in der Kategorie "diashow" enthalten.
@@ -69,6 +72,7 @@ The following Sources can actually be used:
 * The last eight daily pictures from Bing.com
 * Pictures uploaded by VIS-File-Manager
 * Pictures from file system path
+* Pictures from Synology PhotoStation
 
 The Adapter provides a Widget for Presentation in VIS, which offers effects on picture change, for example smooth fade-out and fade-in.
 Additionally a timeout can be configured. When on other views in the same VIS project no actions for the defined timeout occured, the view with the Diashow will be started. With a click on the picture it changes back to the last view or to a predefined view.
@@ -77,6 +81,8 @@ Additionally a timeout can be configured. When on other views in the same VIS pr
 In the Adapter settings the picture source can be choosen. Although the interval for picture change.
 
 When source "File system" is selected, the path can be entered and the format (landscape or portrait) of the pictures to be shown.
+
+When source "Synology PhotoStation" is selected, the IP address or hostname and an username with password has to be configured.
 
 ### VIS-Widget
 The Widget can be found in category "diashow".
