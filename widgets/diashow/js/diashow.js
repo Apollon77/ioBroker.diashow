@@ -314,8 +314,8 @@ vis.binds["diashow"] = {
 					window.DiaShowTimer = null;
 					window.DiaShowTimeoutStarted = false;
 					vis.changeView(window.DiaShowView);
-					DiaShowTimeout(window.DiaShowTimeout);
-				}, window.DiaShowTimeout);
+					DiaShowTimeout();
+				}, window.DiaShowTimeoutTime);
 			}
 		}
 
@@ -327,10 +327,10 @@ vis.binds["diashow"] = {
 						if (vis.views[view].widgets[widgetid].tpl === "tplDiashowPicture"){
 							if (vis.views[view].widgets[widgetid].data.AutoViewChange === true){ 
 								console.log("DiaShowTimeout started");
-								window.DiaShowTimeout = vis.views[view].widgets[widgetid].data.AutoViewChangeTimeout * 1000;
+								window.DiaShowTimeoutTime = vis.views[view].widgets[widgetid].data.AutoViewChangeTimeout * 1000;
 								window.DiaShowTimeoutStarted = true;
 								window.DiaShowView = view;
-								$(document).click(DiaShowTimeout());
+								$(document).click(DiaShowTimeout.bind());
 								DiaShowTimeout();
 							}	
 						}  
