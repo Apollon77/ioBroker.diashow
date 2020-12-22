@@ -306,16 +306,16 @@ vis.binds["diashow"] = {
 				vis.binds["diashow"].initDiashowTimer();
 			}, 100);
 		}
-		function DiaShowTimeout(TimeoutTime = 15000){
-			if (vis.actualView !== window.DiaShowView){
+		function DiaShowTimeout(){
+			if (vis.activeView !== window.DiaShowView){
 				if (window.DiaShowTimer) clearTimeout(window.DiaShowTimer);
 				window.DiaShowLastView = vis.activeView;
 				window.DiaShowTimer = setTimeout(function(){
 					window.DiaShowTimer = null;
 					window.DiaShowTimeoutStarted = false;
 					vis.changeView(window.DiaShowView);
-					DiaShowTimeout(TimeoutTime);
-				}, TimeoutTime);
+					DiaShowTimeout(window.DiaShowTimeout);
+				}, window.DiaShowTimeout);
 			}
 		}
 
@@ -327,10 +327,11 @@ vis.binds["diashow"] = {
 						if (vis.views[view].widgets[widgetid].tpl === "tplDiashowPicture"){
 							if (vis.views[view].widgets[widgetid].data.AutoViewChange === true){ 
 								console.log("DiaShowTimeout started");
+								window.DiaShowTimeout = vis.views[view].widgets[widgetid].data.AutoViewChangeTimeout * 1000;
 								window.DiaShowTimeoutStarted = true;
 								window.DiaShowView = view;
-								$(document).click(DiaShowTimeout(vis.views[view].widgets[widgetid].data.AutoViewChangeTimeout * 1000));
-								DiaShowTimeout(vis.views[view].widgets[widgetid].data.AutoViewChangeTimeout * 1000);
+								$(document).click(DiaShowTimeout());
+								DiaShowTimeout();
 							}	
 						}  
 					}
