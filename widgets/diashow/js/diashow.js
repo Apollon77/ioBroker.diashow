@@ -291,6 +291,7 @@ $.extend(
 	}
 );
 
+
 // this code can be placed directly in diashow.html
 vis.binds["diashow"] = {
 	version: "0.0.1",
@@ -299,6 +300,13 @@ vis.binds["diashow"] = {
 			console.log("Version diashow: " + vis.binds["diashow"].version);
 			vis.binds["diashow"].version = null;
 		}
+	},
+	updateDiashowEffect: function (wid, view){
+		if ($("#inspect_DiashowEffect")[0].value === "EffectJQuery"){
+			vis.hideShowAttr("EffectJQuery", true);
+		} else {
+			vis.hideShowAttr("EffectJQuery", false);
+		} 
 	},
 	initDiashowTimer: function (view){
 		if (!vis.views && !vis.editMode) {
@@ -390,6 +398,12 @@ vis.binds["diashow"] = {
 				vis.changeView(data.AutoViewTarget);
 			}
 		});
+
+		if (vis.editMode){
+			setTimeout(function () {
+				vis.binds["diashow"].updateDiashowEffect();
+			}, 100);
+		}
 
 		if (data.oid){ 
 			vis.states.bind(data.oid + ".val", onChange);
