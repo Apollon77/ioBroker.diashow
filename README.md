@@ -116,7 +116,7 @@ The following configuration options exist:
 	### __WORK IN PROGRESS__
 -->
 
-### 0.0.1
+### 0.0.2
 * (Gaudes) initial release
 
 ## License

@@ -1,9 +1,9 @@
 {
 	"common": {
 		"name": "diashow",
-		"version": "0.0.1",
+		"version": "0.0.2",
 		"news": {
-			"0.0.1": {
+			"0.0.2": {
 				"en": "initial release",
 				"de": "Erstveröffentlichung",
 				"ru": "Начальная версия",
@@ -67,12 +67,16 @@
 		"materialize": true,
 		"dependencies": [
 			{
-				"js-controller": ">=2.0.0"
+				"js-controller": ">=3.0.0"
 			},
 			"vis"
 		]
 	},
 	"encryptedNative":[
+		"syno_username",
+		"syno_userpass"
+	],
+	"protectedNative":[
 		"syno_username",
 		"syno_userpass"
 	],
