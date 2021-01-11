@@ -29,7 +29,7 @@
     "@sentry/types": "^5.29.2",
     "@types/chai": "^4.2.14",
     "@types/chai-as-promised": "^7.1.3",
-    "@types/gulp": "^4.0.7",
+    "@types/gulp": "^4.0.8",
     "@types/image-size": "^0.8.0",
     "@types/iobroker": "^3.2.7",
     "@types/mocha": "^8.2.0",
