@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "diashow",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "news": {
+            "0.0.3": {
+                "en": "Prepare for alpha tests",
+                "de": "Bereiten Sie sich auf Alpha-Tests vor",
+                "ru": "Подготовьтесь к альфа-тестам",
+                "pt": "Prepare-se para testes alfa",
+                "nl": "Bereid je voor op alfatests",
+                "fr": "Préparez-vous aux tests alpha",
+                "it": "Preparati per i test alfa",
+                "es": "Prepárate para las pruebas alfa",
+                "pl": "Przygotuj się do testów alfa",
+                "zh-cn": "准备进行Alpha测试"
+            },
             "0.0.2": {
                 "en": "initial release",
                 "de": "Erstveröffentlichung",

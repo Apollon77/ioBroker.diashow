@@ -116,7 +116,7 @@ The following configuration options exist:
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 0.0.3 (2021-01-14)
 * (Gaudes) Prepare for alpha tests
 
 ### 0.0.2 (2021-01-11)
