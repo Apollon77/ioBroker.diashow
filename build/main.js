@@ -24,7 +24,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 //#region Imports, Variables and Global
 const utils = __importStar(require("@iobroker/adapter-core"));
-const iobObjectHelper = __importStar(require("iobroker-object-helper"));
 const global_helper_1 = require("./modules/global-helper");
 const diaBing = __importStar(require("./modules/diaBing"));
 const diaLocal = __importStar(require("./modules/diaLocal"));
@@ -162,9 +161,25 @@ class Diashow extends utils.Adapter {
                     }
                     break;
             }
+        }
+        catch (err) {
+            Helper.ReportingError(err, MsgErrUnknown, "updateCurrentPictureTimer", "Call Timer Action");
+        }
+        try {
             if (CurrentPicture !== "") {
-                const iobObject = [iobObjectHelper.buildObject(this, { id: "picture", name: "picture", value: CurrentPicture, objectType: "state", role: "text", description: "Current picture" })];
-                await iobObjectHelper.syncObjects(this, iobObject, { removeUnused: true });
+                await this.setObjectNotExistsAsync("picture", {
+                    type: "state",
+                    common: {
+                        name: "picture",
+                        type: "string",
+                        role: "text",
+                        read: true,
+                        write: false,
+                        desc: "Current picture"
+                    },
+                    native: {},
+                });
+                await this.setStateAsync("picture", { val: CurrentPicture, ack: true });
             }
         }
         catch (err) {

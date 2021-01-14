@@ -4,7 +4,6 @@
 
 //#region Imports, Variables and Global
 import * as utils from "@iobroker/adapter-core";
-import * as iobObjectHelper from "iobroker-object-helper";
 import {GlobalHelper} from "./modules/global-helper";
 import * as diaBing from "./modules/diaBing";
 import * as diaLocal from "./modules/diaLocal";
@@ -147,9 +146,24 @@ class Diashow extends utils.Adapter {
 					}
 					break;
 			}
+		}catch(err){
+			Helper.ReportingError(err, MsgErrUnknown, "updateCurrentPictureTimer", "Call Timer Action");
+		}
+		try{
 			if (CurrentPicture !== ""){
-				const iobObject = [iobObjectHelper.buildObject(this, {id: "picture", name: "picture", value: CurrentPicture, objectType: "state", role: "text", description: "Current picture"})];
-				await iobObjectHelper.syncObjects(this, iobObject,{ removeUnused: true });
+				await this.setObjectNotExistsAsync("picture", {
+					type: "state",
+					common: {
+						name: "picture",
+						type: "string",
+						role: "text",
+						read: true,
+						write: false,
+						desc: "Current picture"
+					},
+					native: {},
+				});
+				await this.setStateAsync("picture", { val: CurrentPicture, ack: true });
 			}
 		}catch(err){
 			Helper.ReportingError(err, MsgErrUnknown, "updateCurrentPictureTimer", "Call Timer Action");

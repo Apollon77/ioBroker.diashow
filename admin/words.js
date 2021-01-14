@@ -14,6 +14,18 @@ systemDictionary = {
 		"pl": "Ustawienia adaptera dla diashow",
 		"zh-cn": "diashow的适配器设置"
 	},
+	"config_check_log":{
+		"en": "Please verify correct configuration after saving in ioBroker log",
+		"de": "Bitte überprüfen Sie die korrekte Konfiguration nach dem Speichern im ioBroker-Log",
+		"ru": "Пожалуйста, проверьте правильность конфигурации после сохранения в журнале ioBroker",
+		"pt": "Verifique a configuração correta após salvar no log do ioBroker",
+		"nl": "Controleer de juiste configuratie na het opslaan in het ioBroker-logboek",
+		"fr": "Veuillez vérifier la configuration correcte après l'enregistrement dans le journal ioBroker",
+		"it": "Verificare la corretta configurazione dopo aver salvato nel registro di ioBroker",
+		"es": "Verifique la configuración correcta después de guardar en el registro de ioBroker",
+		"pl": "Sprawdź poprawność konfiguracji po zapisaniu w dzienniku ioBroker",
+		"zh-cn": "保存到ioBroker日志后，请验证正确的配置"
+	},
 	"fs_path":{
 		"en": "Filesystem path to pictures, example: /home/user/pictures",
 		"de": "Dateisystempfad zu Bildern, zum Beispiel: /home/user/images",

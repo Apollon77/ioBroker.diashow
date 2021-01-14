@@ -3,8 +3,8 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.diashow.svg)](https://www.npmjs.com/package/iobroker.diashow)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.diashow.svg)](https://www.npmjs.com/package/iobroker.diashow)
-![Number of Installations (latest)](http://iobroker.live/badges/diashow-installed.svg)
-![Number of Installations (stable)](http://iobroker.live/badges/diashow-stable.svg)
+![Number of Installations (latest)](https://iobroker.live/badges/diashow-installed.svg)
+<!-- ![Number of Installations (stable)](https://iobroker.live/badges/diashow-stable.svg) -->
 [![Dependency Status](https://img.shields.io/david/gaudes/iobroker.diashow.svg)](https://david-dm.org/gaudes/iobroker.diashow)
 ![Test and Release](https://github.com/gaudes/ioBroker.diashow/workflows/Test%20and%20Release/badge.svg)
 
@@ -115,6 +115,9 @@ The following configuration options exist:
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+### __WORK IN PROGRESS__
+* (Gaudes) Prepare for alpha tests
 
 ### 0.0.2 (2021-01-11)
 * (Gaudes) initial release
