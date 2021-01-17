@@ -38,6 +38,8 @@ Bei Auswahl der Quelle "Dateisystem" kann dann noch der Pfad im Dateisystem ausg
 
 Bei Auswahl der Quelle "Synology PhotoStation" muss die IP-Adresse oder der Hostname sowie Benutzername und Passwort angegeben werden.
 
+Achtung: Die Bilder aus allen Quellen mit Ausnahme Bing werden nur beim Start eingelesen. Somit ist bei Änderung (Löschen oder Hinzufügen) ein Neustart des Adapters notwendig.
+
 ### VIS-Widget
 Das Widget ist in der Kategorie "diashow" enthalten.
 
@@ -83,6 +85,8 @@ In the Adapter settings the picture source can be choosen. Although the interval
 When source "File system" is selected, the path can be entered and the format (landscape or portrait) of the pictures to be shown.
 
 When source "Synology PhotoStation" is selected, the IP address or hostname and an username with password has to be configured.
+
+Attention: Pictures from all source, except Bing, are loaded on startup of the Adapter. After changes (Adding or Deleting) a restart of the adapter is required.
 
 ### VIS-Widget
 The Widget can be found in category "diashow".

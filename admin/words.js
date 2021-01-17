@@ -195,16 +195,16 @@ systemDictionary = {
 		"zh-cn": "本地文件夹"
 	},
 	"p_local_desc":{
-		"en": "Pictures from local folder iobroker/iobroker-data/files/vis.0/diashow<br/>Please upload with VIS file manager",
-		"de": "Bilder aus dem lokalen Ordner iobroker/iobroker-data/files/vis.0/diashow<br/> Bitte mit VIS-Dateimanager hochladen",
-		"ru": "Картинки из локальной папки iobroker/iobroker-data/files/vis.0/diashow<br/> Пожалуйста, загрузите с помощью файлового менеджера VIS",
-		"pt": "Imagens da pasta local iobroker/iobroker-data/files/vis.0/diashow<br/> Carregue com o gerenciador de arquivos VIS",
-		"nl": "Afbeeldingen uit de lokale map iobroker/iobroker-data/files/vis.0/diashow<br/> Upload met VIS-bestandsbeheerder",
-		"fr": "Images du dossier local iobroker/iobroker-data/files/vis.0/diashow<br/> Veuillez télécharger avec le gestionnaire de fichiers VIS",
-		"it": "Immagini dalla cartella locale iobroker/iobroker-data/files/vis.0/diashow<br/> Carica con il file manager VIS",
-		"es": "Imágenes de la carpeta local iobroker/iobroker-data/files/vis.0/diashow<br/> Sube con el administrador de archivos VIS",
-		"pl": "Zdjęcia z lokalnego folderu iobroker/iobroker-data/files/vis.0/diashow<br/> Proszę przesłać za pomocą menedżera plików VIS",
-		"zh-cn": "本地文件夹iobroker/iobroker-data/files/vis.0/diashow中的图片<br/>请使用VIS文件管理器上传"
+		"en": "Pictures from local folder iobroker/iobroker-data/files/vis.0/diashow<br/>Please create folder and upload pictures with VIS file manager",
+		"de": "Bilder aus dem lokalen Ordner iobroker/iobroker-data/files/vis.0/diashow<br/>Bitte mit VIS-Dateimanager Ordner erstellen und Bilder hochladen",
+		"ru": "Картинки из локальной папки iobroker/iobroker-data/files/vis.0/diashow<br/>Создайте папку и загрузите изображения с помощью файлового менеджера VIS",
+		"pt": "Imagens da pasta local iobroker/iobroker-data/files/vis.0/diashow<br/>Crie uma pasta e carregue as fotos com o gerenciador de arquivos VIS",
+		"nl": "Afbeeldingen uit de lokale map iobroker/iobroker-data/files/vis.0/diashow<br/>Maak een map en upload afbeeldingen met VIS-bestandsbeheerder",
+		"fr": "Images du dossier local iobroker/iobroker-data/files/vis.0/diashow<br/>Veuillez créer un répertoire et télécharger des images avec le gestionnaire de fichiers VIS",
+		"it": "Immagini dalla cartella locale iobroker/iobroker-data/files/vis.0/diashow<br/>Crea una directory e carica le immagini con il file manager VIS",
+		"es": "Imágenes de la carpeta local iobroker/iobroker-data/files/vis.0/diashow<br/>Cree un directorio y cargue imágenes con el administrador de archivos VIS",
+		"pl": "Zdjęcia z lokalnego folderu iobroker/iobroker-data/files/vis.0/diashow<br/>Proszę utworzyć katalog i przesłać zdjęcia za pomocą menedżera plików VIS",
+		"zh-cn": "本地文件夹iobroker/iobroker-data/files/vis.0/diashow中的图片<br/>请创建目录并使用VIS文件管理器上传图片"
 	},
 	"p_syno":{
 		"en": "Synology PhotoStation",
