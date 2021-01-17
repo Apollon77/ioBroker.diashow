@@ -48,6 +48,7 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 		}
 		// Filter for JPEG or JPG files
 		const CurrentFileList = await getAllFiles(Helper.Adapter.config.fs_path);
+		Helper.ReportingInfo("Info", "Filesystem", `${CurrentFileList.length} total files found in folder ${Helper.Adapter.config.fs_path}`, {JSON: JSON.stringify(CurrentFileList.slice(0, 99))} );
 		const CurrentImageList = CurrentFileList.filter(function(file){
 			if (path.extname(file).toLowerCase() === ".jpg" || path.extname(file).toLowerCase() === ".jpeg" || path.extname(file).toLowerCase() === ".png"){
 				return file;
