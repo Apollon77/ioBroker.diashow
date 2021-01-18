@@ -3,8 +3,8 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.diashow.svg)](https://www.npmjs.com/package/iobroker.diashow)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.diashow.svg)](https://www.npmjs.com/package/iobroker.diashow)
-![Number of Installations (latest)](https://iobroker.live/badges/diashow-installed.svg)
-<!-- ![Number of Installations (stable)](https://iobroker.live/badges/diashow-stable.svg) -->
+![Number of Installations (latest)](https://iobroker.live/badges/diashow-installed.svg?dummy=unused)
+<!-- ![Number of Installations (stable)](https://iobroker.live/badges/diashow-stable.svg?dummy=unused) -->
 [![Dependency Status](https://img.shields.io/david/gaudes/iobroker.diashow.svg)](https://david-dm.org/gaudes/iobroker.diashow)
 ![Test and Release](https://github.com/gaudes/ioBroker.diashow/workflows/Test%20and%20Release/badge.svg)
 
