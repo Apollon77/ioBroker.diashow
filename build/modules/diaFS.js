@@ -23,7 +23,7 @@ exports.updatePictureList = exports.getPicture = void 0;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const imgsize = __importStar(require("image-size"));
-const CurrentImages = [];
+let CurrentImages = [];
 let CurrentImage = "";
 async function getPicture(Helper) {
     try {
@@ -44,7 +44,7 @@ async function getPicture(Helper) {
             }
             const PicContent = await fs.readFileSync(CurrentImage);
             const PicContentB64 = PicContent.toString("base64");
-            return { picture: `data:image/jpeg;base64,${PicContentB64}`, localPath: `${Helper.Adapter.config.fs_path}/${CurrentImage}`, isError: false };
+            return { picture: `data:image/jpeg;base64,${PicContentB64}`, localPath: `${CurrentImage}`, isError: false };
         }
         return { picture: "", localPath: "", isError: true };
     }
@@ -82,6 +82,9 @@ async function updatePictureList(Helper) {
                     }
                 }
             }
+        }
+        else {
+            CurrentImages = CurrentImageList;
         }
         // Images found ?
         if (!(CurrentImages.length > 0)) {

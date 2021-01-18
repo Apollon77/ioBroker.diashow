@@ -30,7 +30,7 @@ export async function getPicture(Helper: GlobalHelper): Promise<result> {
 			}
 			const PicContent = await fs.readFileSync(CurrentImage);
 			const PicContentB64 = PicContent.toString("base64");
-			return {picture: `data:image/jpeg;base64,${PicContentB64}`, localPath: `${Helper.Adapter.config.fs_path}/${CurrentImage}`, isError: false};
+			return {picture: `data:image/jpeg;base64,${PicContentB64}`, localPath: `${CurrentImage}`, isError: false};
 		}
 		return {picture: "", localPath: "", isError: true};
 	}catch(err){
