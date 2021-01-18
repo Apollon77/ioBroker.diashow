@@ -10,7 +10,7 @@ export interface result{
 	errorText?: string;
 }
 
-const CurrentImages: string[] = [];
+let CurrentImages: string[] = [];
 let CurrentImage = "";
 
 export async function getPicture(Helper: GlobalHelper): Promise<result> {
@@ -67,7 +67,10 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 					}
 				}
 			}
+		}else{
+			CurrentImages = CurrentImageList;
 		}
+
 		// Images found ?
 		if (!(CurrentImages.length > 0)){
 			Helper.ReportingError(null, "No pictures found in folder", "Filesystem", "updatePictureList","", false);
