@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "diashow",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "news": {
+            "0.0.4": {
+                "en": "Allow PNG-files in Filesystem\nFix config problem with formats\nHandle portrait orientation in widget",
+                "de": "PNG-Dateien im Dateisystem zulassen\nKonfigurationsproblem mit Formaten behoben\nBehandeln Sie die Porträtausrichtung im Widget",
+                "ru": "Разрешить PNG-файлы в файловой системе\nИсправить проблему конфигурации с форматами\nОбработка портретной ориентации в виджете",
+                "pt": "Permitir arquivos PNG no sistema de arquivos\nCorrigir problema de configuração com formatos\nLidar com a orientação retrato no widget",
+                "nl": "Sta PNG-bestanden toe in bestandssysteem\nFix configuratieprobleem met formaten\nBehandel staande oriëntatie in widget",
+                "fr": "Autoriser les fichiers PNG dans le système de fichiers\nCorrection d'un problème de configuration avec les formats\nGérer l'orientation portrait dans le widget",
+                "it": "Consenti file PNG nel file system\nRisolve il problema di configurazione con i formati\nGestisci l'orientamento verticale nel widget",
+                "es": "Permitir archivos PNG en el sistema de archivos\nSolucionar problema de configuración con formatos\nManejar la orientación vertical en el widget",
+                "pl": "Zezwalaj na pliki PNG w systemie plików\nNapraw problem z konfiguracją z formatami\nObsługuj orientację pionową w widgecie",
+                "zh-cn": "允许文件系统中的PNG文件\n修复格式配置问题\n在小部件中处理纵向方向"
+            },
             "0.0.3": {
                 "en": "Prepare for alpha tests",
                 "de": "Bereiten Sie sich auf Alpha-Tests vor",
