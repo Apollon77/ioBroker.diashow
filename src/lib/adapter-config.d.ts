@@ -13,6 +13,7 @@ declare global {
 			syno_username: string;
 			syno_userpass: string;
 			syno_order: number;
+			syno_format: number;
 		}
 	}
 }

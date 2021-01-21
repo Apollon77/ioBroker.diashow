@@ -121,7 +121,7 @@
 		data-vis-beta="true">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:230px; height:210px;" id="<%= this.data.attr('wid') %>" >
 		<div class="diashow-class vis-widget-body <%== this.data.attr('class') %>" style="padding:2px" >
-			<% vis.binds['diashow'].showDiashow(this.data.wid, this.view, this.data, this.style); %>
+			<% vis.binds['diashow'].showDiashow(this.data.wid, this.view, this.data, this.style);  %>
 			<img class="diashowpicture diashowpicture1" src="<%= vis.states[data.oid + ".val"] %>">
 			<img class="diashowpicture diashowpicture2" src="<%= vis.states[data.oid + ".val"] %>">
 		</div>

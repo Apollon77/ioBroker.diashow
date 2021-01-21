@@ -102,7 +102,8 @@
         "syno_path": "",
         "syno_username": "",
         "syno_userpass": "",
-        "syno_order": 0
+        "syno_order": 0,
+        "syno_format": 0
     },
     "objects": [],
     "instanceObjects": [

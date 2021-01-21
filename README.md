@@ -122,6 +122,8 @@ The following configuration options exist:
 
 ### __WORK IN PROGRESS__
 * (Gaudes) Allow PNG-files in Filesystem
+* (Gaudes) Fix config problem with formats
+* (Gaudes) Handle portrait orientation in widget
 
 ### 0.0.3 (2021-01-14)
 * (Gaudes) Prepare for alpha tests
