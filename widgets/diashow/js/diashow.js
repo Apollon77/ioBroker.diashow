@@ -399,6 +399,27 @@ vis.binds["diashow"] = {
 			}
 		});
 
+		Array.from($(".diashowpicture")).forEach(image =>{
+			image.addEventListener("load", () => DiaShowFitImage(image));
+		})
+
+		function DiaShowFitImage(image){
+			const imgFormat = image.naturalWidth / image.naturalHeight;
+  			if (imgFormat > 1) {
+				// image is landscape
+				image.style.width = '100%';
+				image.style.height = '100%';
+			} else if (imgFormat < 1) {
+				// image is portrait
+				image.style.width = 'auto';
+			  	image.style.height = '100%';
+			} else {
+				// image is square
+				image.style.maxWidth = '100%';
+				image.style.height = '100%';
+			}
+		} 
+
 		if (vis.editMode){
 			setTimeout(function () {
 				vis.binds["diashow"].updateDiashowEffect();

@@ -120,6 +120,9 @@ The following configuration options exist:
 	### __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (Gaudes) Adaptive width and height in widget depending on orientation
+
 ### 0.0.4 (2021-01-21)
 * (Gaudes) Allow PNG-files in Filesystem
 * (Gaudes) Fix config problem with formats
