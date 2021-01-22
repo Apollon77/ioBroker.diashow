@@ -134,12 +134,12 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 				}
 			})
 			// Filter for orientation
-			if (Helper.Adapter.config.fs_format > 0){
+			if (Helper.Adapter.config.syno_format > 0){
 				CurrentImageListFilter1.filter(function(file){
-					if ((Helper.Adapter.config.fs_format === 1 && file.info.resolutionx > file.info.resolutiony) === true){
+					if ((Helper.Adapter.config.syno_format === 1 && file.info.resolutionx > file.info.resolutiony) === true){
 						CurrentImages.push(file);
 					}
-					if ((Helper.Adapter.config.fs_format === 2 && file.info.resolutiony > file.info.resolutionx) === true){
+					if ((Helper.Adapter.config.syno_format === 2 && file.info.resolutiony > file.info.resolutionx) === true){
 						CurrentImages.push(file);
 					}
 				})
