@@ -31,6 +31,16 @@ Dieses bietet auch Funktionen für Effekt beim Bildwechsel, beispielsweise sanft
 Zusätzlich kann ein Timeout eingestellt werden. Sofern auf anderen View im Projekt keine Aktion für das eingestellte Timeout erfolgt ist,
 wird zur View mit der Diashow gewechselt. Durck Klicken des Bilds wird entweder zurück zur letzten Ansicht oder zu einer eingestellten Ansicht gewechselt.
 
+Neben dem Bild selbst als Pfad oder Base64-kodiertes Objekt werden weitere Objekte mit Informationen zum Bild in ioBroker erstellt. 
+Diese sind abhängig von der ausgewählten Quelle:
+
+| Objekt      | Bing | Lokal und Dateisystem | Synology
+| ----------- | ----------- | ----------- | -----------
+| info1       | Titel       | Titel (EXIF-Information) | Titel
+| info2       | Beschreibung        | Betreff (EXIF-Information) | Beschreibung
+| info3       | Copyright-Informationen | Kommentar (EXIF-Information) | Dateiname
+| date        | Datum der Anzeige auf Bing-Seite | Aufnahmedatum (EXIF-Information) | Aufnahmedatum
+
 ### Konfiguration
 In den Einstellungen des Adapters wird die Quelle der Bilder ausgewählt, außerdem das Intervall für den Wechsel der Bilder, beispielsweise 10 Sekunden.
 
@@ -79,6 +89,16 @@ The following Sources can actually be used:
 The Adapter provides a Widget for Presentation in VIS, which offers effects on picture change, for example smooth fade-out and fade-in.
 Additionally a timeout can be configured. When on other views in the same VIS project no actions for the defined timeout occured, the view with the Diashow will be started. With a click on the picture it changes back to the last view or to a predefined view.
 
+Beside the picture as path or Base64 encoded object are more objects with picture informations created in ioBroker. 
+These depend on the selected source:
+
+| Object      | Bing | Local and Filesystem | Synology
+| ----------- | ----------- | ----------- | -----------
+| info1       | Title       | Title (EXIF information) | Title
+| info2       | Description        | Subject (EXIF information) | Description
+| info3       | Copyright | Comment (EXIF information) | Dateiname
+| date        | Date shown on Bing page | Recording date (EXIF information) | Recording date
+
 ### Configuration
 In the Adapter settings the picture source can be choosen. Although the interval for picture change.
 
@@ -123,6 +143,7 @@ The following configuration options exist:
 ### __WORK IN PROGRESS__
 * (Gaudes) Adaptive width and height in widget depending on orientation
 * (Gaudes) Fix format option for Synology
+* (Gaudes) Writing extended picture information to objects
 
 ### 0.0.4 (2021-01-21)
 * (Gaudes) Allow PNG-files in Filesystem

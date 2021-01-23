@@ -6,43 +6,55 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updatePictureList = exports.getPicture = void 0;
 const axios_1 = __importDefault(require("axios"));
 const BingUrl = "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=10&mkt=de-DE";
-const CurrentImages = [];
-let CurrentImage = "";
+let BingPictureList;
+let CurrentImage;
 async function getPicture(Helper) {
     try {
-        if (CurrentImages.length === 0) {
+        if (BingPictureList.length === 0) {
             await updatePictureList(Helper);
         }
-        if (CurrentImages.length !== 0) {
-            if (CurrentImage === "") {
-                CurrentImage = CurrentImages[0];
+        if (BingPictureList.length !== 0) {
+            if (!CurrentImage) {
+                CurrentImage = BingPictureList[0];
             }
             else {
-                if (CurrentImages.indexOf(CurrentImage) === CurrentImages.length - 1) {
-                    CurrentImage = CurrentImages[0];
+                if (BingPictureList.indexOf(CurrentImage) === BingPictureList.length - 1) {
+                    CurrentImage = BingPictureList[0];
                 }
                 else {
-                    CurrentImage = CurrentImages[CurrentImages.indexOf(CurrentImage) + 1];
+                    CurrentImage = BingPictureList[BingPictureList.indexOf(CurrentImage) + 1];
                 }
             }
-            return { url: `/${Helper.Adapter.namespace}/${CurrentImage}`, localPath: CurrentImage, isError: false };
+            return CurrentImage;
         }
-        return { url: "", localPath: CurrentImage, isError: true };
+        return null;
     }
     catch (err) {
         Helper.ReportingError(err, "Unknown Error", "Bing", "getPicture");
-        return { url: "", localPath: "", isError: true };
+        return null;
     }
 }
 exports.getPicture = getPicture;
 async function updatePictureList(Helper) {
-    const CurrentImagesBing = [];
     // Getting List from Bing.com
     try {
         const WebResult = await axios_1.default.get(BingUrl);
         Helper.ReportingInfo("Debug", "Bing", "Picture list received", { JSON: JSON.stringify(WebResult.data) });
         (WebResult.data).images.forEach(Image => {
-            CurrentImagesBing.push("https://bing.com" + Image.url);
+            const ImageDetails = Image.copyright.match(/(.*)\s\(©\s(.*)\)/);
+            let ImageDescription = "";
+            let ImageCopyright = "";
+            if (ImageDetails) {
+                ImageDescription = ImageDetails[1];
+                ImageCopyright = ImageDetails[2];
+            }
+            const ImageDate = new Date(parseInt(Image.startdate.substring(0, 4)), parseInt(Image.startdate.substring(4, 6)), parseInt(Image.startdate.substring(6, 8)));
+            if (Array.isArray(BingPictureList)) {
+                BingPictureList.push({ bingurl: "https://bing.com" + Image.url, url: "", path: "", info1: Image.title, info2: ImageDescription, info3: ImageCopyright, date: ImageDate });
+            }
+            else {
+                BingPictureList = [{ bingurl: "https://bing.com" + Image.url, url: "", path: "", info1: Image.title, info2: ImageDescription, info3: ImageCopyright, date: ImageDate }];
+            }
         });
     }
     catch (err) {
@@ -51,12 +63,13 @@ async function updatePictureList(Helper) {
     }
     // Saving list to files
     try {
-        for (const CountElement in CurrentImagesBing) {
-            const currentWebCall = await axios_1.default.get(CurrentImagesBing[CountElement], { responseType: "arraybuffer" });
+        for (const CountElement in BingPictureList) {
+            const currentWebCall = await axios_1.default.get(BingPictureList[CountElement].bingurl, { responseType: "arraybuffer" });
             await Helper.Adapter.writeFileAsync(Helper.Adapter.namespace, `bing/${CountElement}.jpg`, currentWebCall.data);
-            CurrentImages.push(`bing/${CountElement}.jpg`);
+            BingPictureList[CountElement].url = `/${Helper.Adapter.namespace}/bing/${CountElement}.jpg`;
+            BingPictureList[CountElement].path = BingPictureList[CountElement].url;
         }
-        Helper.ReportingInfo("Info", "Bing", `${CurrentImages.length} pictures downloaded from Bing`, { JSON: JSON.stringify(CurrentImages.slice(0, 10)) });
+        Helper.ReportingInfo("Info", "Bing", `${BingPictureList.length} pictures downloaded from Bing`, { JSON: JSON.stringify(BingPictureList.slice(0, 10)) });
         return true;
     }
     catch (err) {

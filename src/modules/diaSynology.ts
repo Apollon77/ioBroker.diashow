@@ -6,27 +6,15 @@ import {
 } from "axios";
 import * as path from "path";
 
-export interface result{
-	picture: string;
-	localPath: string;
-	isError?: boolean;
-	errorText?: string;
-}
-
-interface synImageInfo{
-	name: string;
-	resolutionx: number;
-	resolutiony: number;
-	[propName: string]: number|string|boolean|null;
-}
-
-interface synImage{
-	id: string;
-	type: "photo";
-	pos: number;
-	info: synImageInfo;
-	additional: null;
-	thumbnail_status: string;
+export interface SynoPicture{
+	url: string,
+	path: string,
+	info1: string,
+	info2: string,
+	info3: string,
+	date: Date | null,
+	x: number,
+	y: number
 }
 
 // Connection State for internal use
@@ -34,11 +22,11 @@ let synoConnectionState  = false;
 // Axios instance with options
 const synoConnection: AxiosInstance = axios.create();
 
-let CurrentImages: synImage[] = [];
-let CurrentImage: synImage;
-let CurrentPicture: result;
+let CurrentImages: SynoPicture[];
+let CurrentImage: SynoPicture;
+let CurrentPicture: SynoPicture;
 
-export async function getPicture(Helper: GlobalHelper): Promise<result>{
+export async function getPicture(Helper: GlobalHelper): Promise<SynoPicture | null>{
 	try{
 		if (!CurrentPicture){
 			await getPicturePrefetch(Helper);
@@ -48,7 +36,7 @@ export async function getPicture(Helper: GlobalHelper): Promise<result>{
 		return CurrentPictureResult;
 	} catch (err){
 		Helper.ReportingError(err, "Unknown Error", "Synology", "getPicture");
-		return {picture: "", localPath: "", isError: true};
+		return null;
 	}
 }
 
@@ -72,10 +60,10 @@ export async function getPicturePrefetch(Helper: GlobalHelper): Promise<void> {
 	// Retrieve Image
 	try{
 		await loginSyno(Helper);
-		const synURL = `http://${Helper.Adapter.config.syno_path}/photo/webapi/download.php?api=SYNO.PhotoStation.Download&method=getphoto&version=1&id=${CurrentImage.id}&download=true`;
+		const synURL = `http://${Helper.Adapter.config.syno_path}/photo/webapi/download.php?api=SYNO.PhotoStation.Download&method=getphoto&version=1&id=${CurrentImage.path}&download=true`;
 		const synResult: AxiosResponse = await synoConnection.get(synURL,{responseType: "arraybuffer"});
 		const PicContentB64 = synResult.data.toString("base64");
-		CurrentPicture = {picture: `data:image/jpeg;base64,${PicContentB64}`, localPath: `${CurrentImage.id}`, isError: false};
+		CurrentPicture = { ...CurrentImage, url: `data:image/jpeg;base64,${PicContentB64}` }
 	} catch (err){
 		Helper.ReportingError(err, "Unknown Error", "Synology", "getPicturePrefetch/Retrieve");
 	}
@@ -83,7 +71,7 @@ export async function getPicturePrefetch(Helper: GlobalHelper): Promise<void> {
 
 export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> {
 	await loginSyno(Helper);
-	const CurrentImageList: synImage[] = [];
+	const CurrentImageList: SynoPicture[] = [ { path: "0", url: "", info1: "", info2: "", info3: "", date: null, x: 0, y: 0} ];
 	if (synoConnectionState === true){
 		// Retrieve complete list of pictures
 		try{
@@ -108,7 +96,7 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 				const synResult: AxiosResponse = await (synoConnection.get(synURL));
 				if (synResult.data["success"] === true && Array.isArray(synResult.data["data"]["items"])){
 					synResult.data["data"]["items"].forEach(element => {
-						CurrentImageList.push(element as synImage);
+						CurrentImageList.push( {path: element.id, url: "", info1: element.info.title, info2: element.info.description, info3: element.info.name, date: new Date(element.info.takendate) || null, x: element.info.resolutionx, y: element.info.resolutiony } );
 					});
 					if (synResult.data["data"]["total"] === synResult.data["data"]["offset"]){
 						synEndOfFiles = true;
@@ -128,19 +116,27 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 		// Filter pictures
 		try{
 			// Filter for JPEG or JPG files
-    		const CurrentImageListFilter1 = CurrentImageList.filter(function(file){
-				if (path.extname(file.info.name).toLowerCase() === ".jpg" || path.extname(file.info.name).toLowerCase() === ".jpeg"){
-					return file;
+			const CurrentImageListFilter1 = CurrentImageList.filter(function(element){
+				if (path.extname(element.info3).toLowerCase() === ".jpg" || path.extname(element.info3).toLowerCase() === ".jpeg"){
+					return element;
 				}
 			})
 			// Filter for orientation
 			if (Helper.Adapter.config.syno_format > 0){
-				CurrentImageListFilter1.filter(function(file){
-					if ((Helper.Adapter.config.syno_format === 1 && file.info.resolutionx > file.info.resolutiony) === true){
-						CurrentImages.push(file);
+				CurrentImageListFilter1.filter(function(element){
+					if ((Helper.Adapter.config.syno_format === 1 && element.x > element.y) === true){
+						if (Array.isArray(CurrentImages)){
+							CurrentImages.push(element);
+						}else{
+							CurrentImages = [ element ];
+						}
 					}
-					if ((Helper.Adapter.config.syno_format === 2 && file.info.resolutiony > file.info.resolutionx) === true){
-						CurrentImages.push(file);
+					if ((Helper.Adapter.config.syno_format === 2 && element.y > element.x) === true){
+						if (Array.isArray(CurrentImages)){
+							CurrentImages.push(element);
+						}else{
+							CurrentImages = [ element ];
+						}
 					}
 				})
 			}else{
@@ -149,7 +145,7 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 			// Random order ?
 			if (Helper.Adapter.config.syno_order === 3){
 				// See https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-				let currentIndex = CurrentImages.length, temporaryValue: synImage, randomIndex: number;
+				let currentIndex = CurrentImages.length, temporaryValue: SynoPicture, randomIndex: number;
 				// While there remain elements to shuffle...
 				while (0 !== currentIndex) {
 					// Pick a remaining element...

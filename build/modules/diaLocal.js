@@ -1,15 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updatePictureList = exports.getPicture = void 0;
-const CurrentImages = [];
-let CurrentImage = "";
+const exif_1 = require("./exif");
+let CurrentImages;
+let CurrentImage;
 async function getPicture(Helper) {
     try {
         if (CurrentImages.length === 0) {
             await updatePictureList(Helper);
         }
         if (CurrentImages.length !== 0) {
-            if (CurrentImage === "") {
+            if (!CurrentImage) {
                 CurrentImage = CurrentImages[0];
             }
             else {
@@ -20,29 +21,42 @@ async function getPicture(Helper) {
                     CurrentImage = CurrentImages[CurrentImages.indexOf(CurrentImage) + 1];
                 }
             }
-            return { url: `${CurrentImage}`, localPath: CurrentImage, isError: false };
+            return CurrentImage;
         }
-        return { url: "", localPath: CurrentImage, isError: true };
+        return null;
     }
     catch (err) {
         Helper.ReportingError(err, "Unknown Error", "Local", "getPicture");
-        return { url: "", localPath: "", isError: true };
+        return null;
     }
 }
 exports.getPicture = getPicture;
 async function updatePictureList(Helper) {
     try {
-        const CurrentImageList = await (Helper.Adapter.readDirAsync("vis.0", "/diashow"));
-        if (!(CurrentImageList.length > 0)) {
+        const CurrentImageFiles = await (Helper.Adapter.readDirAsync("vis.0", "/diashow"));
+        if (!(CurrentImageFiles.length > 0)) {
             Helper.ReportingError(null, "No pictures found in folder", "Local", "updatePictureList/List", "", false);
             return false;
         }
         else {
-            CurrentImageList.forEach(file => {
-                CurrentImages.push(`/vis.0/diashow/${file.file}`);
-            });
+            await Promise.all(CurrentImageFiles.map(async (file) => {
+                const CurrentImageFile = await Helper.Adapter.readFileAsync("vis.0", `/diashow/${file.file}`);
+                const fileInfo = await exif_1.getPictureInformation(Helper, CurrentImageFile.file);
+                let info1, info2, info3 = "";
+                let date = null;
+                (fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info1) ? info1 = fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info1 : info1 = "";
+                (fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info2) ? info2 = fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info2 : info2 = "";
+                (fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info3) ? info3 = fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info3 : info3 = "";
+                (fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.date) ? date = fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.date : date = null;
+                if (Array.isArray(CurrentImages)) {
+                    CurrentImages.push({ url: `/vis.0/diashow/${file.file}`, path: file.file, info1: info1, info2: info2, info3: info3, date: date });
+                }
+                else {
+                    CurrentImages = [{ url: `/vis.0/diashow/${file.file}`, path: file.file, info1: info1, info2: info2, info3: info3, date: date }];
+                }
+            }));
         }
-        Helper.ReportingInfo("Info", "Local", `${CurrentImageList.length} pictures found`, { JSON: JSON.stringify(CurrentImageList.slice(0, 99)) });
+        Helper.ReportingInfo("Info", "Local", `${CurrentImages.length} pictures found`, { JSON: JSON.stringify(CurrentImages.slice(0, 10)) });
         return true;
     }
     catch (err) {

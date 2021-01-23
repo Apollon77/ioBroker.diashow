@@ -23,15 +23,16 @@ exports.updatePictureList = exports.getPicture = void 0;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const imgsize = __importStar(require("image-size"));
-let CurrentImages = [];
-let CurrentImage = "";
+const exif_1 = require("./exif");
+let CurrentImages;
+let CurrentImage;
 async function getPicture(Helper) {
     try {
         if (CurrentImages.length === 0) {
             await updatePictureList(Helper);
         }
         if (CurrentImages.length !== 0) {
-            if (CurrentImage === "") {
+            if (!CurrentImage) {
                 CurrentImage = CurrentImages[0];
             }
             else {
@@ -42,22 +43,22 @@ async function getPicture(Helper) {
                     CurrentImage = CurrentImages[CurrentImages.indexOf(CurrentImage) + 1];
                 }
             }
-            const PicContent = await fs.readFileSync(CurrentImage);
+            const PicContent = fs.readFileSync(CurrentImage.path);
             const PicContentB64 = PicContent.toString("base64");
-            return { picture: `data:image/jpeg;base64,${PicContentB64}`, localPath: `${CurrentImage}`, isError: false };
+            return { ...CurrentImage, url: `data:image/jpeg;base64,${PicContentB64}` };
         }
-        return { picture: "", localPath: "", isError: true };
+        return null;
     }
     catch (err) {
         Helper.ReportingError(err, "Unknown Error", "Filesystem", "getPicture");
-        return { picture: "", localPath: "", isError: true };
+        return null;
     }
 }
 exports.getPicture = getPicture;
 async function updatePictureList(Helper) {
     try {
         // Check if folder exists
-        if (!await fs.existsSync(Helper.Adapter.config.fs_path)) {
+        if (!fs.existsSync(Helper.Adapter.config.fs_path)) {
             Helper.Adapter.log.error(`Folder ${Helper.Adapter.config.fs_path} does not exist`);
             return false;
         }
@@ -70,22 +71,45 @@ async function updatePictureList(Helper) {
             }
         });
         // Checking orientation of pictures (landscape or portrait) if configured
-        if (Helper.Adapter.config.fs_format !== 0) {
-            for (const ImageIndex in CurrentImageList) {
+        for (const ImageIndex in CurrentImageList) {
+            if (Helper.Adapter.config.fs_format !== 0) {
                 const ImageSize = await imgsize.imageSize(CurrentImageList[ImageIndex]);
                 if (ImageSize.width && ImageSize.height) {
                     if ((Helper.Adapter.config.fs_format === 1 && ImageSize.width > ImageSize.height) === true) {
-                        CurrentImages.push(CurrentImageList[ImageIndex]);
+                        if (Array.isArray(CurrentImages)) {
+                            CurrentImages.push({ path: CurrentImageList[ImageIndex], url: "", info1: "", info2: "", info3: "", date: null });
+                        }
+                        else {
+                            CurrentImages = [{ path: CurrentImageList[ImageIndex], url: "", info1: "", info2: "", info3: "", date: null }];
+                        }
                     }
                     if ((Helper.Adapter.config.fs_format === 2 && ImageSize.height > ImageSize.width) === true) {
-                        CurrentImages.push(CurrentImageList[ImageIndex]);
+                        if (Array.isArray(CurrentImages)) {
+                            CurrentImages.push({ path: CurrentImageList[ImageIndex], url: "", info1: "", info2: "", info3: "", date: null });
+                        }
+                        else {
+                            CurrentImages = [{ path: CurrentImageList[ImageIndex], url: "", info1: "", info2: "", info3: "", date: null }];
+                        }
                     }
                 }
             }
+            else {
+                if (Array.isArray(CurrentImages)) {
+                    CurrentImages.push({ path: CurrentImageList[ImageIndex], url: "", info1: "", info2: "", info3: "", date: null });
+                }
+                else {
+                    CurrentImages = [{ path: CurrentImageList[ImageIndex], url: "", info1: "", info2: "", info3: "", date: null }];
+                }
+            }
         }
-        else {
-            CurrentImages = CurrentImageList;
-        }
+        // Fillup picture information
+        await Promise.all(CurrentImages.map(async (CurrentImage) => {
+            const fileInfo = await exif_1.getPictureInformation(Helper, CurrentImage.path);
+            (fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info1) ? CurrentImage.info1 = fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info1 : CurrentImage.info1 = "";
+            (fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info2) ? CurrentImage.info2 = fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info2 : CurrentImage.info2 = "";
+            (fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info3) ? CurrentImage.info3 = fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.info3 : CurrentImage.info3 = "";
+            (fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.date) ? CurrentImage.date = fileInfo === null || fileInfo === void 0 ? void 0 : fileInfo.date : CurrentImage.date = null;
+        }));
         // Images found ?
         if (!(CurrentImages.length > 0)) {
             Helper.ReportingError(null, "No pictures found in folder", "Filesystem", "updatePictureList", "", false);

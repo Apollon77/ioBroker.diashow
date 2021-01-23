@@ -29,7 +29,7 @@ const path = __importStar(require("path"));
 let synoConnectionState = false;
 // Axios instance with options
 const synoConnection = axios_1.default.create();
-let CurrentImages = [];
+let CurrentImages;
 let CurrentImage;
 let CurrentPicture;
 async function getPicture(Helper) {
@@ -43,7 +43,7 @@ async function getPicture(Helper) {
     }
     catch (err) {
         Helper.ReportingError(err, "Unknown Error", "Synology", "getPicture");
-        return { picture: "", localPath: "", isError: true };
+        return null;
     }
 }
 exports.getPicture = getPicture;
@@ -70,10 +70,10 @@ async function getPicturePrefetch(Helper) {
     // Retrieve Image
     try {
         await loginSyno(Helper);
-        const synURL = `http://${Helper.Adapter.config.syno_path}/photo/webapi/download.php?api=SYNO.PhotoStation.Download&method=getphoto&version=1&id=${CurrentImage.id}&download=true`;
+        const synURL = `http://${Helper.Adapter.config.syno_path}/photo/webapi/download.php?api=SYNO.PhotoStation.Download&method=getphoto&version=1&id=${CurrentImage.path}&download=true`;
         const synResult = await synoConnection.get(synURL, { responseType: "arraybuffer" });
         const PicContentB64 = synResult.data.toString("base64");
-        CurrentPicture = { picture: `data:image/jpeg;base64,${PicContentB64}`, localPath: `${CurrentImage.id}`, isError: false };
+        CurrentPicture = { ...CurrentImage, url: `data:image/jpeg;base64,${PicContentB64}` };
     }
     catch (err) {
         Helper.ReportingError(err, "Unknown Error", "Synology", "getPicturePrefetch/Retrieve");
@@ -82,7 +82,7 @@ async function getPicturePrefetch(Helper) {
 exports.getPicturePrefetch = getPicturePrefetch;
 async function updatePictureList(Helper) {
     await loginSyno(Helper);
-    const CurrentImageList = [];
+    const CurrentImageList = [{ path: "0", url: "", info1: "", info2: "", info3: "", date: null, x: 0, y: 0 }];
     if (synoConnectionState === true) {
         // Retrieve complete list of pictures
         try {
@@ -107,7 +107,7 @@ async function updatePictureList(Helper) {
                 const synResult = await (synoConnection.get(synURL));
                 if (synResult.data["success"] === true && Array.isArray(synResult.data["data"]["items"])) {
                     synResult.data["data"]["items"].forEach(element => {
-                        CurrentImageList.push(element);
+                        CurrentImageList.push({ path: element.id, url: "", info1: element.info.title, info2: element.info.description, info3: element.info.name, date: new Date(element.info.takendate) || null, x: element.info.resolutionx, y: element.info.resolutiony });
                     });
                     if (synResult.data["data"]["total"] === synResult.data["data"]["offset"]) {
                         synEndOfFiles = true;
@@ -130,19 +130,29 @@ async function updatePictureList(Helper) {
         // Filter pictures
         try {
             // Filter for JPEG or JPG files
-            const CurrentImageListFilter1 = CurrentImageList.filter(function (file) {
-                if (path.extname(file.info.name).toLowerCase() === ".jpg" || path.extname(file.info.name).toLowerCase() === ".jpeg") {
-                    return file;
+            const CurrentImageListFilter1 = CurrentImageList.filter(function (element) {
+                if (path.extname(element.info3).toLowerCase() === ".jpg" || path.extname(element.info3).toLowerCase() === ".jpeg") {
+                    return element;
                 }
             });
             // Filter for orientation
             if (Helper.Adapter.config.syno_format > 0) {
-                CurrentImageListFilter1.filter(function (file) {
-                    if ((Helper.Adapter.config.syno_format === 1 && file.info.resolutionx > file.info.resolutiony) === true) {
-                        CurrentImages.push(file);
+                CurrentImageListFilter1.filter(function (element) {
+                    if ((Helper.Adapter.config.syno_format === 1 && element.x > element.y) === true) {
+                        if (Array.isArray(CurrentImages)) {
+                            CurrentImages.push(element);
+                        }
+                        else {
+                            CurrentImages = [element];
+                        }
                     }
-                    if ((Helper.Adapter.config.syno_format === 2 && file.info.resolutiony > file.info.resolutionx) === true) {
-                        CurrentImages.push(file);
+                    if ((Helper.Adapter.config.syno_format === 2 && element.y > element.x) === true) {
+                        if (Array.isArray(CurrentImages)) {
+                            CurrentImages.push(element);
+                        }
+                        else {
+                            CurrentImages = [element];
+                        }
                     }
                 });
             }

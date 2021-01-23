@@ -12,6 +12,15 @@ import * as diaSyno from "./modules/diaSynology"
 
 let Helper: GlobalHelper;
 const MsgErrUnknown = "Unknown Error";
+
+interface Picture{
+	url: string;
+	path: string;
+	info1: string;
+	info2: string;
+	info3: string;
+	date: Date | null ;
+}
 //#endregion
 
 class Diashow extends utils.Adapter {
@@ -108,7 +117,8 @@ class Diashow extends utils.Adapter {
 	}
 
 	private async updateCurrentPictureTimer(): Promise<void>{
-		let CurrentPicture = "";
+		let CurrentPictureResult: Picture | null = null;
+		let Provider = "";
 		Helper.ReportingInfo("Debug", "Adapter", "updateCurrentPictureTimer occured")
 		try{
 			this.tUpdateCurrentPictureTimeout && clearTimeout(this.tUpdateCurrentPictureTimeout);
@@ -118,39 +128,29 @@ class Diashow extends utils.Adapter {
 		try{
 			switch(this.config.provider){
 				case 1:
-					const CurrentPictureResultBing: diaBing.result = await diaBing.getPicture(Helper);
-					if (CurrentPictureResultBing.url !== ""){
-						CurrentPicture = CurrentPictureResultBing.url;
-						Helper.ReportingInfo("Debug", "Bing", `Set picture to ${CurrentPicture}`)
-					}
+					CurrentPictureResult = await diaBing.getPicture(Helper);
+					Provider = "Bing";
 					break;
 				case 2:
-					const CurrentPictureResultLocal: diaLocal.result = await diaLocal.getPicture(Helper);
-					if (CurrentPictureResultLocal.url !== ""){
-						CurrentPicture = CurrentPictureResultLocal.url;
-						Helper.ReportingInfo("Debug", "Local", `Set picture to ${CurrentPicture}`)
-					}
+					CurrentPictureResult = await diaLocal.getPicture(Helper);
+					Provider = "Local";
 					break;
 				case 3:
-					const CurrentPictureResultFS: diaFS.result = await diaFS.getPicture(Helper);
-					if (CurrentPictureResultFS.picture !== ""){
-						CurrentPicture = CurrentPictureResultFS.picture;
-						Helper.ReportingInfo("Debug", "FileSystem", `Set picture to ${CurrentPictureResultFS.localPath}`)
-					}
+					CurrentPictureResult = await diaFS.getPicture(Helper);
+					Provider = "FileSystem";
 					break;
 				case 4:
-					const CurrentPictureResultSyno: diaSyno.result = await diaSyno.getPicture(Helper);
-					if (CurrentPictureResultSyno.picture !== ""){
-						CurrentPicture = CurrentPictureResultSyno.picture;
-						Helper.ReportingInfo("Debug", "Synology", `Set picture to ${CurrentPictureResultSyno.localPath}`)
-					}
+					CurrentPictureResult = await diaSyno.getPicture(Helper);
+					Provider = "Synology";
 					break;
 			}
 		}catch(err){
 			Helper.ReportingError(err, MsgErrUnknown, "updateCurrentPictureTimer", "Call Timer Action");
 		}
 		try{
-			if (CurrentPicture !== ""){
+			if (CurrentPictureResult !== null){
+				Helper.ReportingInfo("Debug", Provider, `Set picture to ${CurrentPictureResult.path}`)
+				// Set picture
 				await this.setObjectNotExistsAsync("picture", {
 					type: "state",
 					common: {
@@ -163,7 +163,63 @@ class Diashow extends utils.Adapter {
 					},
 					native: {},
 				});
-				await this.setStateAsync("picture", { val: CurrentPicture, ack: true });
+				await this.setStateAsync("picture", { val: CurrentPictureResult.url, ack: true });
+				// Set info1
+				await this.setObjectNotExistsAsync("info1", {
+					type: "state",
+					common: {
+						name: "info1",
+						type: "string",
+						role: "text",
+						read: true,
+						write: false,
+						desc: "Info 1 for picture"
+					},
+					native: {},
+				});
+				await this.setStateAsync("info1", { val: CurrentPictureResult.info1, ack: true });
+				// Set info2
+				await this.setObjectNotExistsAsync("info2", {
+					type: "state",
+					common: {
+						name: "info2",
+						type: "string",
+						role: "text",
+						read: true,
+						write: false,
+						desc: "Info 2 for picture"
+					},
+					native: {},
+				});
+				await this.setStateAsync("info2", { val: CurrentPictureResult.info2, ack: true });
+				// Set info3
+				await this.setObjectNotExistsAsync("info3", {
+					type: "state",
+					common: {
+						name: "info3",
+						type: "string",
+						role: "text",
+						read: true,
+						write: false,
+						desc: "Info 3 for picture"
+					},
+					native: {},
+				});
+				await this.setStateAsync("info3", { val: CurrentPictureResult.info3, ack: true });
+				// Set date
+				await this.setObjectNotExistsAsync("date", {
+					type: "state",
+					common: {
+						name: "date",
+						type: "number",
+						role: "date",
+						read: true,
+						write: false,
+						desc: "Date of picture"
+					},
+					native: {},
+				});
+				await this.setStateAsync("date", { val: CurrentPictureResult.date?.getTime() || null , ack: true });
 			}
 		}catch(err){
 			Helper.ReportingError(err, MsgErrUnknown, "updateCurrentPictureTimer", "Call Timer Action");
