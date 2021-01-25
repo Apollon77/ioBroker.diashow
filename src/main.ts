@@ -12,6 +12,7 @@ import * as diaSyno from "./modules/diaSynology"
 
 let Helper: GlobalHelper;
 const MsgErrUnknown = "Unknown Error";
+let UpdateRunning = false;
 
 interface Picture{
 	url: string;
@@ -33,6 +34,7 @@ class Diashow extends utils.Adapter {
 			name: "diashow",
 		});
 		this.on("ready", this.onReady.bind(this));
+		this.on("stateChange", this.onStateChange.bind(this));
 		this.on("unload", this.onUnload.bind(this));
 	}
 
@@ -44,10 +46,43 @@ class Diashow extends utils.Adapter {
 			// Init Helper
 			Helper = new GlobalHelper(this);
 
+			// Create button for updates
+			await this.setObjectNotExistsAsync("updatepicturelist", {
+				type: "state",
+				common: {
+					name: "updatepicturelist",
+					type: "boolean",
+					role: "button",
+					read: true,
+					write: true,
+					desc: "Update picture list",
+					def: false
+				},
+				native: {},
+			});
+			this.subscribeStates("updatepicturelist");
+
 			// Starting updatePictureStoreTimer action
 			await this.updatePictureStoreTimer();
 		}catch(err){
 			Helper.ReportingError(err, MsgErrUnknown, "onReady");
+		}
+	}
+
+	/**
+	 * Is called if a subscribed state changes
+	 */
+	private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
+		if (state) {
+			if (id === `${this.namespace}.updatepicturelist` && state?.val === true){
+				if (UpdateRunning === true){
+					Helper.ReportingInfo("Info", "Adapter", "Update picture list already running");
+				}else{
+					Helper.ReportingInfo("Info", "Adapter", "Updating picture list");
+					clearTimeout(this.tUpdateCurrentPictureTimeout);
+					await this.updatePictureStoreTimer();
+				}
+			}
 		}
 	}
 
@@ -72,6 +107,7 @@ class Diashow extends utils.Adapter {
 	private tUpdateCurrentPictureTimeout: any = null;
 
 	private async updatePictureStoreTimer(): Promise<void>{
+		UpdateRunning = true;
 		let updatePictureStoreResult = false;
 		Helper.ReportingInfo("Debug", "Adapter", "UpdatePictureStoreTimer occured")
 		try{
@@ -114,6 +150,7 @@ class Diashow extends utils.Adapter {
 		}catch(err){
 			Helper.ReportingError(err, MsgErrUnknown, "updatePictureStoreTimer", "Set Timer");
 		}
+		UpdateRunning = false;
 	}
 
 	private async updateCurrentPictureTimer(): Promise<void>{

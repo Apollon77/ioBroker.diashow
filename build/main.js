@@ -31,6 +31,7 @@ const diaFS = __importStar(require("./modules/diaFS"));
 const diaSyno = __importStar(require("./modules/diaSynology"));
 let Helper;
 const MsgErrUnknown = "Unknown Error";
+let UpdateRunning = false;
 //#endregion
 class Diashow extends utils.Adapter {
     //#region Basic Adapter Functions
@@ -44,6 +45,7 @@ class Diashow extends utils.Adapter {
         this.tUpdatePictureStoreTimeout = null;
         this.tUpdateCurrentPictureTimeout = null;
         this.on("ready", this.onReady.bind(this));
+        this.on("stateChange", this.onStateChange.bind(this));
         this.on("unload", this.onUnload.bind(this));
     }
     /**
@@ -53,11 +55,43 @@ class Diashow extends utils.Adapter {
         try {
             // Init Helper
             Helper = new global_helper_1.GlobalHelper(this);
+            // Create button for updates
+            await this.setObjectNotExistsAsync("updatepicturelist", {
+                type: "state",
+                common: {
+                    name: "updatepicturelist",
+                    type: "boolean",
+                    role: "button",
+                    read: true,
+                    write: true,
+                    desc: "Update picture list",
+                    def: false
+                },
+                native: {},
+            });
+            this.subscribeStates("updatepicturelist");
             // Starting updatePictureStoreTimer action
             await this.updatePictureStoreTimer();
         }
         catch (err) {
             Helper.ReportingError(err, MsgErrUnknown, "onReady");
+        }
+    }
+    /**
+     * Is called if a subscribed state changes
+     */
+    async onStateChange(id, state) {
+        if (state) {
+            if (id === `${this.namespace}.updatepicturelist` && (state === null || state === void 0 ? void 0 : state.val) === true) {
+                if (UpdateRunning === true) {
+                    Helper.ReportingInfo("Info", "Adapter", "Update picture list already running");
+                }
+                else {
+                    Helper.ReportingInfo("Info", "Adapter", "Updating picture list");
+                    clearTimeout(this.tUpdateCurrentPictureTimeout);
+                    await this.updatePictureStoreTimer();
+                }
+            }
         }
     }
     /**
@@ -74,6 +108,7 @@ class Diashow extends utils.Adapter {
         }
     }
     async updatePictureStoreTimer() {
+        UpdateRunning = true;
         let updatePictureStoreResult = false;
         Helper.ReportingInfo("Debug", "Adapter", "UpdatePictureStoreTimer occured");
         try {
@@ -120,6 +155,7 @@ class Diashow extends utils.Adapter {
         catch (err) {
             Helper.ReportingError(err, MsgErrUnknown, "updatePictureStoreTimer", "Set Timer");
         }
+        UpdateRunning = false;
     }
     async updateCurrentPictureTimer() {
         var _a;

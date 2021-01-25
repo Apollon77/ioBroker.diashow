@@ -3,8 +3,8 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.diashow.svg)](https://www.npmjs.com/package/iobroker.diashow)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.diashow.svg)](https://www.npmjs.com/package/iobroker.diashow)
-![Number of Installations (latest)](https://iobroker.live/badges/diashow-installed.svg?dummy=unused)
-<!-- ![Number of Installations (stable)](https://iobroker.live/badges/diashow-stable.svg?dummy=unused) -->
+![Number of Installations (latest)](https://iobroker.live/badges/diashow-installed.svg)
+<!-- ![Number of Installations (stable)](https://iobroker.live/badges/diashow-stable.svg) -->
 [![Dependency Status](https://img.shields.io/david/gaudes/iobroker.diashow.svg)](https://david-dm.org/gaudes/iobroker.diashow)
 ![Test and Release](https://github.com/gaudes/ioBroker.diashow/workflows/Test%20and%20Release/badge.svg)
 
@@ -41,14 +41,14 @@ Diese sind abhängig von der ausgewählten Quelle:
 | info3       | Copyright-Informationen | Kommentar (EXIF-Information) | Dateiname
 | date        | Datum der Anzeige auf Bing-Seite | Aufnahmedatum (EXIF-Information) | Aufnahmedatum
 
+Der Button "updatepicturelist" als Objekt in ioBroker liest die Bilder aus den konfigurierten Quellen neu ein, z.B. nach Hinzufügen oder Löschen von Bildern. Die Bilder aus allen Quellen mit Ausnahme Bing werden sonst nur beim Start des Adapters eingelesen. Bing-Bilder werden stündlich automatisch aktualisiert.
+
 ### Konfiguration
 In den Einstellungen des Adapters wird die Quelle der Bilder ausgewählt, außerdem das Intervall für den Wechsel der Bilder, beispielsweise 10 Sekunden.
 
 Bei Auswahl der Quelle "Dateisystem" kann dann noch der Pfad im Dateisystem ausgewählt werden, außerdem das Format (Hoch- oder Querformat) der anzuzeigenden Bilder.
 
 Bei Auswahl der Quelle "Synology PhotoStation" muss die IP-Adresse oder der Hostname sowie Benutzername und Passwort angegeben werden.
-
-Achtung: Die Bilder aus allen Quellen mit Ausnahme Bing werden nur beim Start eingelesen. Somit ist bei Änderung (Löschen oder Hinzufügen) ein Neustart des Adapters notwendig.
 
 ### VIS-Widget
 Das Widget ist in der Kategorie "diashow" enthalten.
@@ -99,6 +99,8 @@ These depend on the selected source:
 | info3       | Copyright | Comment (EXIF information) | Dateiname
 | date        | Date shown on Bing page | Recording date (EXIF information) | Recording date
 
+The button "updatepicturelist" as objekt in ioBroker re-reads the pictures from the configured source, usefull for example after adding or removing pictures from source. Pictures from all source, except Bing, are usually loaded on startup of the Adapter. Bing pictures are automatically updated hourly.
+
 ### Configuration
 In the Adapter settings the picture source can be choosen. Although the interval for picture change.
 
@@ -106,7 +108,7 @@ When source "File system" is selected, the path can be entered and the format (l
 
 When source "Synology PhotoStation" is selected, the IP address or hostname and an username with password has to be configured.
 
-Attention: Pictures from all source, except Bing, are loaded on startup of the Adapter. After changes (Adding or Deleting) a restart of the adapter is required.
+Attention:  After changes (Adding or Deleting) a restart of the adapter is required.
 
 ### VIS-Widget
 The Widget can be found in category "diashow".
@@ -144,6 +146,7 @@ The following configuration options exist:
 * (Gaudes) Adaptive width and height in widget depending on orientation
 * (Gaudes) Fix format option for Synology
 * (Gaudes) Writing extended picture information to objects
+* (Gaudes) Button for update picture list
 
 ### 0.0.4 (2021-01-21)
 * (Gaudes) Allow PNG-files in Filesystem
