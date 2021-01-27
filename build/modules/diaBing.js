@@ -59,7 +59,7 @@ async function updatePictureList(Helper) {
     }
     catch (err) {
         Helper.ReportingError(err, "Unknown Error", "Bing", "updatePictureList/List");
-        return false;
+        return { success: false, picturecount: 0 };
     }
     // Saving list to files
     try {
@@ -70,11 +70,11 @@ async function updatePictureList(Helper) {
             BingPictureList[CountElement].path = BingPictureList[CountElement].url;
         }
         Helper.ReportingInfo("Info", "Bing", `${BingPictureList.length} pictures downloaded from Bing`, { JSON: JSON.stringify(BingPictureList.slice(0, 10)) });
-        return true;
+        return { success: true, picturecount: BingPictureList.length };
     }
     catch (err) {
         Helper.ReportingError(err, "Unknown Error", "Bing", "updatePictureList/Download");
-        return false;
+        return { success: false, picturecount: 0 };
     }
 }
 exports.updatePictureList = updatePictureList;

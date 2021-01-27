@@ -10,6 +10,11 @@ export interface LocalPicture{
 	date: Date | null
 }
 
+export interface LocalPictureListUpdateResult{
+	success: boolean;
+	picturecount: number;
+}
+
 let CurrentImages: LocalPicture[];
 let CurrentImage: LocalPicture;
 
@@ -37,12 +42,12 @@ export async function getPicture(Helper: GlobalHelper): Promise<LocalPicture | n
 	}
 }
 
-export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> {
+export async function updatePictureList(Helper: GlobalHelper): Promise<LocalPictureListUpdateResult> {
 	try{
 		const CurrentImageFiles = await (Helper.Adapter.readDirAsync("vis.0", "/diashow"));
 		if (!(CurrentImageFiles.length > 0)){
 			Helper.ReportingError(null, "No pictures found in folder", "Local", "updatePictureList/List","", false);
-			return false;
+			return { success: false, picturecount: 0};
 		} else {
 			await Promise.all(CurrentImageFiles.map(async file => {
 				const CurrentImageFile = await Helper.Adapter.readFileAsync("vis.0", `/diashow/${file.file}`);
@@ -61,9 +66,9 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 			}))
 		}
 		Helper.ReportingInfo("Info", "Local", `${CurrentImages.length} pictures found`, {JSON: JSON.stringify(CurrentImages.slice(0, 10))} );
-		return true;
+		return { success: true, picturecount: CurrentImages.length};
 	}catch(err) {
 		Helper.ReportingError(err, "Unknown Error", "Local", "updatePictureList/List");
-		return false;
+		return { success: false, picturecount: 0};
 	}
 }

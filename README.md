@@ -147,6 +147,7 @@ The following configuration options exist:
 * (Gaudes) Fix format option for Synology
 * (Gaudes) Writing extended picture information to objects
 * (Gaudes) Button for update picture list
+* (Gaudes) Save picture count as object
 
 ### 0.0.4 (2021-01-21)
 * (Gaudes) Allow PNG-files in Filesystem

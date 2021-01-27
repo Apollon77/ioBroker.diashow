@@ -13,6 +13,11 @@ export interface FSPicture{
 	date: Date | null
 }
 
+export interface FSPictureListUpdateResult{
+	success: boolean;
+	picturecount: number;
+}
+
 let CurrentImages: FSPicture[];
 let CurrentImage: FSPicture;
 
@@ -42,12 +47,12 @@ export async function getPicture(Helper: GlobalHelper): Promise<FSPicture | null
 	}
 }
 
-export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> {
+export async function updatePictureList(Helper: GlobalHelper): Promise<FSPictureListUpdateResult> {
 	try{
 		// Check if folder exists
 		if (! fs.existsSync(Helper.Adapter.config.fs_path)){
 			Helper.Adapter.log.error(`Folder ${Helper.Adapter.config.fs_path} does not exist`);
-			return false;
+			return { success: false, picturecount: 0 };
 		}
 		// Filter for JPEG or JPG files
 		const CurrentFileList = await getAllFiles(Helper.Adapter.config.fs_path);
@@ -98,14 +103,14 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 		// Images found ?
 		if (!(CurrentImages.length > 0)){
 			Helper.ReportingError(null, "No pictures found in folder", "Filesystem", "updatePictureList","", false);
-			return false;
+			return { success: false, picturecount: 0 };
 		}else{
 			Helper.ReportingInfo("Info", "Filesystem", `${CurrentImages.length} pictures found in folder ${Helper.Adapter.config.fs_path}`, {JSON: JSON.stringify(CurrentImages.slice(0, 99))} );
-			return true;
+			return { success: true, picturecount: CurrentImages.length };
 		}
 	}catch(err) {
 		Helper.ReportingError(err, "Unknown Error", "Filesystem", "updatePictureList");
-		return false;
+		return { success: false, picturecount: 0 };
 	}
 }
 

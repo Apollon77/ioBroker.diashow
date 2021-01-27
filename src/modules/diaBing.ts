@@ -24,6 +24,11 @@ export interface BingPicture{
 	date: Date
 }
 
+export interface BingPictureListUpdateResult{
+	success: boolean;
+	picturecount: number;
+}
+
 const BingUrl = "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=10&mkt=de-DE";
 let BingPictureList: BingPicture[];
 let CurrentImage: BingPicture;
@@ -52,7 +57,7 @@ export async function getPicture(Helper: GlobalHelper): Promise<BingPicture | nu
 	}
 }
 
-export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> {
+export async function updatePictureList(Helper: GlobalHelper): Promise<BingPictureListUpdateResult> {
 	// Getting List from Bing.com
 	try{
 		const WebResult = await axios.get(BingUrl);
@@ -74,7 +79,7 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 		});
 	} catch (err) {
 		Helper.ReportingError(err, "Unknown Error", "Bing", "updatePictureList/List");
-		return false;
+		return { success: false, picturecount: 0};
 	}
 	// Saving list to files
 	try{
@@ -85,9 +90,9 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 			BingPictureList[CountElement].path = BingPictureList[CountElement].url;
 		}
 		Helper.ReportingInfo("Info", "Bing", `${BingPictureList.length} pictures downloaded from Bing`, {JSON: JSON.stringify(BingPictureList.slice(0, 10))} );
-		return true;
+		return { success: true, picturecount: BingPictureList.length};
 	} catch (err){
 		Helper.ReportingError(err, "Unknown Error", "Bing", "updatePictureList/Download");
-		return false;
+		return { success: false, picturecount: 0};
 	}
 }

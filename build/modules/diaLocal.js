@@ -36,7 +36,7 @@ async function updatePictureList(Helper) {
         const CurrentImageFiles = await (Helper.Adapter.readDirAsync("vis.0", "/diashow"));
         if (!(CurrentImageFiles.length > 0)) {
             Helper.ReportingError(null, "No pictures found in folder", "Local", "updatePictureList/List", "", false);
-            return false;
+            return { success: false, picturecount: 0 };
         }
         else {
             await Promise.all(CurrentImageFiles.map(async (file) => {
@@ -57,11 +57,11 @@ async function updatePictureList(Helper) {
             }));
         }
         Helper.ReportingInfo("Info", "Local", `${CurrentImages.length} pictures found`, { JSON: JSON.stringify(CurrentImages.slice(0, 10)) });
-        return true;
+        return { success: true, picturecount: CurrentImages.length };
     }
     catch (err) {
         Helper.ReportingError(err, "Unknown Error", "Local", "updatePictureList/List");
-        return false;
+        return { success: false, picturecount: 0 };
     }
 }
 exports.updatePictureList = updatePictureList;

@@ -109,7 +109,7 @@ class Diashow extends utils.Adapter {
     }
     async updatePictureStoreTimer() {
         UpdateRunning = true;
-        let updatePictureStoreResult = false;
+        let updatePictureStoreResult = { success: false, picturecount: 0 };
         Helper.ReportingInfo("Debug", "Adapter", "UpdatePictureStoreTimer occured");
         try {
             this.tUpdatePictureStoreTimeout && clearTimeout(this.tUpdatePictureStoreTimeout);
@@ -137,7 +137,7 @@ class Diashow extends utils.Adapter {
             Helper.ReportingError(err, MsgErrUnknown, "updatePictureStoreTimer", "Call Timer Action");
         }
         try {
-            if (this.config.provider === 1 && updatePictureStoreResult) {
+            if (this.config.provider === 1 && updatePictureStoreResult.success === true) {
                 this.tUpdatePictureStoreTimeout = setTimeout(() => {
                     this.updatePictureStoreTimer();
                 }, (this.config.update_interval * 3600000)); // Update every hour if successfull
@@ -147,7 +147,21 @@ class Diashow extends utils.Adapter {
                     this.updatePictureStoreTimer();
                 }, (this.config.update_interval * 60000)); // Update every minute if error
             }
-            if (updatePictureStoreResult) {
+            if (updatePictureStoreResult.success === true && updatePictureStoreResult.picturecount > 0) {
+                // Save picturecount
+                await this.setObjectNotExistsAsync("picturecount", {
+                    type: "state",
+                    common: {
+                        name: "picturecount",
+                        type: "number",
+                        role: "value",
+                        read: true,
+                        write: false,
+                        desc: "Pictures found"
+                    },
+                    native: {},
+                });
+                await this.setStateAsync("picturecount", { val: updatePictureStoreResult.picturecount, ack: true });
                 // Starting updateCurrentPictureTimer action
                 this.updateCurrentPictureTimer();
             }

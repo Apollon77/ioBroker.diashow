@@ -17,6 +17,11 @@ export interface SynoPicture{
 	y: number
 }
 
+export interface SynoPictureListUpdateResult{
+	success: boolean;
+	picturecount: number;
+}
+
 // Connection State for internal use
 let synoConnectionState  = false;
 // Axios instance with options
@@ -69,7 +74,7 @@ export async function getPicturePrefetch(Helper: GlobalHelper): Promise<void> {
 	}
 }
 
-export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> {
+export async function updatePictureList(Helper: GlobalHelper): Promise<SynoPictureListUpdateResult> {
 	await loginSyno(Helper);
 	const CurrentImageList: SynoPicture[] = [ { path: "0", url: "", info1: "", info2: "", info3: "", date: null, x: 0, y: 0} ];
 	if (synoConnectionState === true){
@@ -106,12 +111,12 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 				}else{
 					Helper.ReportingError(null, "Error getting pictures from Synology", "Synology", "updatePictureList/List", JSON.stringify(synResult.data), false);
 					synEndOfFiles = true;
-					return false;
+					return { success: false, picturecount: 0 };
 				}
 			}
 		} catch (err){
 			Helper.ReportingError(err, "Unknown Error", "Synology", "updatePictureList/List");
-			return false;
+			return { success: false, picturecount: 0 };
 		}
 		// Filter pictures
 		try{
@@ -159,18 +164,18 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<boolean> 
 			}
 		} catch (err){
 			Helper.ReportingError(err, "Unknown Error", "Synology", "updatePictureList/Filter");
-			return false;
+			return { success: false, picturecount: 0 };
 		}
 		// Images found ?
 		if (!(CurrentImages.length > 0)){
 			Helper.ReportingError(null, "No pictures found", "Synology", "updatePictureList","", false);
-			return false;
+			return { success: false, picturecount: 0 };
 		}else{
 			Helper.ReportingInfo("Info", "Synology", `${CurrentImages.length} pictures found`, {JSON: JSON.stringify(CurrentImages.slice(0, 99))} );
-			return true;
+			return { success: true, picturecount: CurrentImages.length };
 		}
 	} else{
-		return false;
+		return { success: false, picturecount: 0 };
 	}
 }
 

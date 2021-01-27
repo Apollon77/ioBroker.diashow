@@ -60,7 +60,7 @@ async function updatePictureList(Helper) {
         // Check if folder exists
         if (!fs.existsSync(Helper.Adapter.config.fs_path)) {
             Helper.Adapter.log.error(`Folder ${Helper.Adapter.config.fs_path} does not exist`);
-            return false;
+            return { success: false, picturecount: 0 };
         }
         // Filter for JPEG or JPG files
         const CurrentFileList = await getAllFiles(Helper.Adapter.config.fs_path);
@@ -113,16 +113,16 @@ async function updatePictureList(Helper) {
         // Images found ?
         if (!(CurrentImages.length > 0)) {
             Helper.ReportingError(null, "No pictures found in folder", "Filesystem", "updatePictureList", "", false);
-            return false;
+            return { success: false, picturecount: 0 };
         }
         else {
             Helper.ReportingInfo("Info", "Filesystem", `${CurrentImages.length} pictures found in folder ${Helper.Adapter.config.fs_path}`, { JSON: JSON.stringify(CurrentImages.slice(0, 99)) });
-            return true;
+            return { success: true, picturecount: CurrentImages.length };
         }
     }
     catch (err) {
         Helper.ReportingError(err, "Unknown Error", "Filesystem", "updatePictureList");
-        return false;
+        return { success: false, picturecount: 0 };
     }
 }
 exports.updatePictureList = updatePictureList;
