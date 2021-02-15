@@ -114,7 +114,7 @@ class Diashow extends utils.Adapter {
 	private async updatePictureStoreTimer(): Promise<void>{
 		UpdateRunning = true;
 		let updatePictureStoreResult: PictureListUpdateResult = { success: false, picturecount: 0};
-		Helper.ReportingInfo("Debug", "Adapter", "UpdatePictureStoreTimer occured")
+		Helper.ReportingInfo("Debug", "Adapter", "UpdatePictureStoreTimer occured");
 		try{
 			this.tUpdatePictureStoreTimeout && clearTimeout(this.tUpdatePictureStoreTimeout);
 		}catch(err){
@@ -176,7 +176,7 @@ class Diashow extends utils.Adapter {
 	private async updateCurrentPictureTimer(): Promise<void>{
 		let CurrentPictureResult: Picture | null = null;
 		let Provider = "";
-		Helper.ReportingInfo("Debug", "Adapter", "updateCurrentPictureTimer occured")
+		Helper.ReportingInfo("Debug", "Adapter", "updateCurrentPictureTimer occured");
 		try{
 			this.tUpdateCurrentPictureTimeout && clearTimeout(this.tUpdateCurrentPictureTimeout);
 		}catch(err){
@@ -206,7 +206,7 @@ class Diashow extends utils.Adapter {
 		}
 		try{
 			if (CurrentPictureResult !== null){
-				Helper.ReportingInfo("Debug", Provider, `Set picture to ${CurrentPictureResult.path}`)
+				Helper.ReportingInfo("Debug", Provider, `Set picture to ${CurrentPictureResult.path}`);
 				// Set picture
 				await this.setObjectNotExistsAsync("picture", {
 					type: "state",

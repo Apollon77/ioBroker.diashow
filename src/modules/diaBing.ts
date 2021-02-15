@@ -85,7 +85,7 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<BingPictu
 	try{
 		for (const CountElement in BingPictureList){
 			const currentWebCall = await axios.get(BingPictureList[CountElement].bingurl,{responseType: "arraybuffer"});
-			await Helper.Adapter.writeFileAsync(Helper.Adapter.namespace, `bing/${CountElement}.jpg`, currentWebCall.data)
+			await Helper.Adapter.writeFileAsync(Helper.Adapter.namespace, `bing/${CountElement}.jpg`, currentWebCall.data);
 			BingPictureList[CountElement].url = `/${Helper.Adapter.namespace}/bing/${CountElement}.jpg`;
 			BingPictureList[CountElement].path = BingPictureList[CountElement].url;
 		}

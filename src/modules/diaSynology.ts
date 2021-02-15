@@ -68,7 +68,7 @@ export async function getPicturePrefetch(Helper: GlobalHelper): Promise<void> {
 		const synURL = `http://${Helper.Adapter.config.syno_path}/photo/webapi/download.php?api=SYNO.PhotoStation.Download&method=getphoto&version=1&id=${CurrentImage.path}&download=true`;
 		const synResult: AxiosResponse = await synoConnection.get(synURL,{responseType: "arraybuffer"});
 		const PicContentB64 = synResult.data.toString("base64");
-		CurrentPicture = { ...CurrentImage, url: `data:image/jpeg;base64,${PicContentB64}` }
+		CurrentPicture = { ...CurrentImage, url: `data:image/jpeg;base64,${PicContentB64}` };
 	} catch (err){
 		Helper.ReportingError(err, "Unknown Error", "Synology", "getPicturePrefetch/Retrieve");
 	}
@@ -125,7 +125,7 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<SynoPictu
 				if (path.extname(element.info3).toLowerCase() === ".jpg" || path.extname(element.info3).toLowerCase() === ".jpeg"){
 					return element;
 				}
-			})
+			});
 			// Filter for orientation
 			if (Helper.Adapter.config.syno_format > 0){
 				CurrentImageListFilter1.filter(function(element){
@@ -143,7 +143,7 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<SynoPictu
 							CurrentImages = [ element ];
 						}
 					}
-				})
+				});
 			}else{
 				CurrentImages = CurrentImageListFilter1;
 			}

@@ -148,6 +148,7 @@ The following configuration options exist:
 * (Gaudes) Writing extended picture information to objects
 * (Gaudes) Button for update picture list
 * (Gaudes) Save picture count as object
+* (Gaudes) Quality fixing (lgtm.com)
 
 ### 0.0.4 (2021-01-21)
 * (Gaudes) Allow PNG-files in Filesystem
