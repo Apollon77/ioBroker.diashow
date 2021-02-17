@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "diashow",
-        "version": "0.0.5",
+        "version": "0.0.6",
         "news": {
+            "0.0.6": {
+                "en": "Test sentry release",
+                "de": "Testen Sie die Wachpostenfreigabe",
+                "ru": "Выпуск тестового караула",
+                "pt": "Teste de liberação de sentinela",
+                "nl": "Test de wachtpost",
+                "fr": "Test de libération de sentinelle",
+                "it": "Prova il rilascio della sentinella",
+                "es": "Prueba de liberación de centinela",
+                "pl": "Test uwolnienia wartownika",
+                "zh-cn": "测试哨兵释放"
+            },
             "0.0.5": {
                 "en": "Adaptive width and height in widget depending on orientation\nFix format option for Synology\nWriting extended picture information to objects\nButton for update picture list\nSave picture count as object\nQuality fixing (lgtm.com)\nInclude Sentry error reporting\nInclude Dependabot updates",
                 "de": "Adaptive Breite und Höhe im Widget je nach Ausrichtung\nFormatoption für Synology korrigieren\nSchreiben erweiterter Bildinformationen in Objekte\nSchaltfläche zum Aktualisieren der Bilderliste\nBildanzahl als Objekt speichern\nQualitätsfixierung (lgtm.com)\nSentry-Fehlerberichterstattung einschließen\nFügen Sie Dependabot-Updates hinzu",
