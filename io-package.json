@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "diashow",
-        "version": "0.0.6",
+        "version": "0.0.7",
         "news": {
+            "0.0.7": {
+                "en": "Test sentry release",
+                "de": "Testen Sie die Wachpostenfreigabe",
+                "ru": "Выпуск тестового караула",
+                "pt": "Teste de liberação de sentinela",
+                "nl": "Test de wachtpost",
+                "fr": "Test de libération de sentinelle",
+                "it": "Prova il rilascio della sentinella",
+                "es": "Prueba de liberación de centinela",
+                "pl": "Test uwolnienia wartownika",
+                "zh-cn": "测试哨兵释放"
+            },
             "0.0.6": {
                 "en": "Test sentry release",
                 "de": "Testen Sie die Wachpostenfreigabe",
