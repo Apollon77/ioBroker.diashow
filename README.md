@@ -43,6 +43,9 @@ Diese sind abhängig von der ausgewählten Quelle:
 
 Der Button "updatepicturelist" als Objekt in ioBroker liest die Bilder aus den konfigurierten Quellen neu ein, z.B. nach Hinzufügen oder Löschen von Bildern. Die Bilder aus allen Quellen mit Ausnahme Bing werden sonst nur beim Start des Adapters eingelesen. Bing-Bilder werden stündlich automatisch aktualisiert.
 
+**Dieser Adapter verwendet die Sentry Bibliotheken um automatisch Abstürze und Programmfehler an die Entwickler zu übermitteln.** 
+Weitere Details und für Informationen zur Deaktivierung der Fehlerberichterstattung in der [Sentry-Plugin Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab JS-Controller 3.0 verwendet.
+
 ### Konfiguration
 In den Einstellungen des Adapters wird die Quelle der Bilder ausgewählt, außerdem das Intervall für den Wechsel der Bilder, beispielsweise 10 Sekunden.
 
@@ -101,6 +104,9 @@ These depend on the selected source:
 
 The button "updatepicturelist" as objekt in ioBroker re-reads the pictures from the configured source, usefull for example after adding or removing pictures from source. Pictures from all source, except Bing, are usually loaded on startup of the Adapter. Bing pictures are automatically updated hourly.
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** 
+For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ### Configuration
 In the Adapter settings the picture source can be choosen. Although the interval for picture change.
 
@@ -149,6 +155,7 @@ The following configuration options exist:
 * (Gaudes) Button for update picture list
 * (Gaudes) Save picture count as object
 * (Gaudes) Quality fixing (lgtm.com)
+* (Gaudes) Include Sentry error reporting
 
 ### 0.0.4 (2021-01-21)
 * (Gaudes) Allow PNG-files in Filesystem

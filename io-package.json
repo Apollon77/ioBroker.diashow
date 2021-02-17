@@ -95,7 +95,16 @@
                 "js-controller": ">=3.0.0"
             },
             "vis"
-        ]
+        ],
+        "plugins": {
+            "sentry": {
+                "dsn": "https://0832d5a217aa4dfc95151afe565c835e@sentry.iobroker.net/117",
+                "errorBlacklist": [
+                    "SyntaxError",
+                    "HANDLED"
+                ]
+            }
+        }
     },
     "encryptedNative": [
         "syno_username",
