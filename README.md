@@ -148,6 +148,9 @@ The following configuration options exist:
 	### __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (Gaudes) Test sentry release
+
 ### 0.0.6 (2021-02-17)
 * (Gaudes) Test sentry release
 
