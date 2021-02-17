@@ -156,6 +156,7 @@ The following configuration options exist:
 * (Gaudes) Save picture count as object
 * (Gaudes) Quality fixing (lgtm.com)
 * (Gaudes) Include Sentry error reporting
+* (Gaudes) Include Dependabot updates
 
 ### 0.0.4 (2021-01-21)
 * (Gaudes) Allow PNG-files in Filesystem
