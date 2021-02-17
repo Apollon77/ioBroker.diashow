@@ -107,7 +107,11 @@ async function updatePictureList(Helper) {
                 const synResult = await (synoConnection.get(synURL));
                 if (synResult.data["success"] === true && Array.isArray(synResult.data["data"]["items"])) {
                     synResult.data["data"]["items"].forEach(element => {
-                        CurrentImageList.push({ path: element.id, url: "", info1: element.info.title, info2: element.info.description, info3: element.info.name, date: new Date(element.info.takendate) || null, x: element.info.resolutionx, y: element.info.resolutiony });
+                        let PictureDate = null;
+                        if (element.info.takendate) {
+                            PictureDate = new Date(element.info.takendate) || null;
+                        }
+                        CurrentImageList.push({ path: element.id, url: "", info1: element.info.title, info2: element.info.description, info3: element.info.name, date: PictureDate, x: element.info.resolutionx, y: element.info.resolutiony });
                     });
                     if (synResult.data["data"]["total"] === synResult.data["data"]["offset"]) {
                         synEndOfFiles = true;
@@ -118,7 +122,6 @@ async function updatePictureList(Helper) {
                 }
                 else {
                     Helper.ReportingError(null, "Error getting pictures from Synology", "Synology", "updatePictureList/List", JSON.stringify(synResult.data), false);
-                    synEndOfFiles = true;
                     return { success: false, picturecount: 0 };
                 }
             }
