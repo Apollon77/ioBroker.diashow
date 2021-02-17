@@ -148,6 +148,9 @@ The following configuration options exist:
 	### __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (Gaudes) Test sentry release
+
 ### 0.0.5 (2021-02-17)
 * (Gaudes) Adaptive width and height in widget depending on orientation
 * (Gaudes) Fix format option for Synology
