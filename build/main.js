@@ -69,6 +69,7 @@ class Diashow extends utils.Adapter {
                 },
                 native: {},
             });
+            await this.setStateAsync("updatepicturelist", false, true);
             this.subscribeStates("updatepicturelist");
             // Starting updatePictureStoreTimer action
             await this.updatePictureStoreTimer();
@@ -82,7 +83,7 @@ class Diashow extends utils.Adapter {
      */
     async onStateChange(id, state) {
         if (state) {
-            if (id === `${this.namespace}.updatepicturelist` && (state === null || state === void 0 ? void 0 : state.val) === true) {
+            if (id === `${this.namespace}.updatepicturelist` && (state === null || state === void 0 ? void 0 : state.val) === true && (state === null || state === void 0 ? void 0 : state.ack) === false) {
                 if (UpdateRunning === true) {
                     Helper.ReportingInfo("Info", "Adapter", "Update picture list already running");
                 }
@@ -91,6 +92,7 @@ class Diashow extends utils.Adapter {
                     clearTimeout(this.tUpdateCurrentPictureTimeout);
                     await this.updatePictureStoreTimer();
                 }
+                await this.setStateAsync("updatepicturelist", false, false);
             }
         }
     }

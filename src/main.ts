@@ -65,6 +65,7 @@ class Diashow extends utils.Adapter {
 				},
 				native: {},
 			});
+			await this.setStateAsync("updatepicturelist", false, true);
 			this.subscribeStates("updatepicturelist");
 
 			// Starting updatePictureStoreTimer action
@@ -79,7 +80,7 @@ class Diashow extends utils.Adapter {
 	 */
 	private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
 		if (state) {
-			if (id === `${this.namespace}.updatepicturelist` && state?.val === true){
+			if (id === `${this.namespace}.updatepicturelist` && state?.val === true && state?.ack === false){
 				if (UpdateRunning === true){
 					Helper.ReportingInfo("Info", "Adapter", "Update picture list already running");
 				}else{
@@ -87,6 +88,7 @@ class Diashow extends utils.Adapter {
 					clearTimeout(this.tUpdateCurrentPictureTimeout);
 					await this.updatePictureStoreTimer();
 				}
+				await this.setStateAsync("updatepicturelist", false, false);
 			}
 		}
 	}

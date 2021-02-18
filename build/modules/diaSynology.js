@@ -109,7 +109,7 @@ async function updatePictureList(Helper) {
                     synResult.data["data"]["items"].forEach(element => {
                         let PictureDate = null;
                         if (element.info.takendate) {
-                            PictureDate = new Date(element.info.takendate) || null;
+                            PictureDate = new Date(element.info.takendate);
                         }
                         CurrentImageList.push({ path: element.id, url: "", info1: element.info.title, info2: element.info.description, info3: element.info.name, date: PictureDate, x: element.info.resolutionx, y: element.info.resolutiony });
                     });
