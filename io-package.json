@@ -67,15 +67,15 @@
         },
         "desc": {
             "en": "Diashow for VIS from different sources",
-            "de": "Diashow for VIS from different sources",
-            "ru": "Diashow for VIS from different sources",
-            "pt": "Diashow for VIS from different sources",
-            "nl": "Diashow for VIS from different sources",
-            "fr": "Diashow for VIS from different sources",
-            "it": "Diashow for VIS from different sources",
-            "es": "Diashow for VIS from different sources",
-            "pl": "Diashow for VIS from different sources",
-            "zh-cn": "Diashow for VIS from different sources"
+            "de": "Diashow für VIS aus verschiedenen Quellen",
+            "ru": "Диашоу для ВИС из разных источников",
+            "pt": "Diashow para VIS de diferentes fontes",
+            "nl": "Diashow voor VIS uit verschillende bronnen",
+            "fr": "Diashow pour VIS de différentes sources",
+            "it": "Diashow per VIS da diverse fonti",
+            "es": "Diashow para VIS de diferentes fuentes",
+            "pl": "Diashow dla VIS z różnych źródeł",
+            "zh-cn": "Diashow来自不同来源的VIS"
         },
         "authors": [
             "Gaudes <ralf@gaudes.net>"

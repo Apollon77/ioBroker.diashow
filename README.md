@@ -17,7 +17,7 @@
 ![Demo](docs/img/demo.gif)
 
 ## <a name="deutsch"></a>Diashow Adapter für ioBroker
-Dieser Adapter für ioBroker stellt eine Diashow für VIS zur Verfügung.
+Dieser Adapter für ioBroker stellt eine Diashow quasi als Bildschirmschoner für VIS zur Verfügung.
 
 Folgende Quellen stehen aktuell zur Verfügung:
 
@@ -80,7 +80,7 @@ Folgende Einstellungen sind möglich:
 	* Zielansicht: Aufzurufende Ansicht beim Verlassen der Diashow
 
 ## <a name="english"></a>Diashow Adapter for ioBroker
-This Adapter for ioBroker provides a Diashow for VIS.
+This Adapter for ioBroker provides a Diashow for VIS, like a screensaver.
 
 The following Sources can actually be used:
 
