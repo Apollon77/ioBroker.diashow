@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "diashow",
-        "version": "0.0.7",
+        "version": "0.1.0",
         "news": {
+            "0.1.0": {
+                "en": "Prepare for beta tests\nInclude Dependabot updates",
+                "de": "Bereiten Sie sich auf Betatests vor\nFügen Sie Dependabot-Updates hinzu",
+                "ru": "Подготовьтесь к бета-тестам\nВключите обновления Dependabot",
+                "pt": "Prepare-se para os testes beta\nIncluir atualizações Dependabot",
+                "nl": "Bereid je voor op bètatests\nVoeg Dependabot-updates toe",
+                "fr": "Préparez-vous aux tests bêta\nInclure les mises à jour de Dependabot",
+                "it": "Preparati per i beta test\nIncludi gli aggiornamenti di Dependabot",
+                "es": "Prepárate para las pruebas beta\nIncluir actualizaciones de Dependabot",
+                "pl": "Przygotuj się do testów beta\nDołącz aktualizacje Dependabot",
+                "zh-cn": "准备进行Beta测试\n包括Dependabot更新"
+            },
             "0.0.5": {
                 "en": "Adaptive width and height in widget depending on orientation\nFix format option for Synology\nWriting extended picture information to objects\nButton for update picture list\nSave picture count as object\nQuality fixing (lgtm.com)\nInclude Sentry error reporting\nInclude Dependabot updates",
                 "de": "Adaptive Breite und Höhe im Widget je nach Ausrichtung\nFormatoption für Synology korrigieren\nSchreiben erweiterter Bildinformationen in Objekte\nSchaltfläche zum Aktualisieren der Bilderliste\nBildanzahl als Objekt speichern\nQualitätsfixierung (lgtm.com)\nSentry-Fehlerberichterstattung einschließen\nFügen Sie Dependabot-Updates hinzu",
