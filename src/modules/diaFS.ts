@@ -36,9 +36,14 @@ export async function getPicture(Helper: GlobalHelper): Promise<FSPicture | null
 					CurrentImage = CurrentImages[CurrentImages.indexOf(CurrentImage) + 1];
 				}
 			}
-			const PicContent = fs.readFileSync(CurrentImage.path);
-			const PicContentB64 = PicContent.toString("base64");
-			return { ...CurrentImage, url: `data:image/jpeg;base64,${PicContentB64}`};
+			if (fs.existsSync(CurrentImage.path) === true){
+				const PicContent = fs.readFileSync(CurrentImage.path);
+				const PicContentB64 = PicContent.toString("base64");
+				return { ...CurrentImage, url: `data:image/jpeg;base64,${PicContentB64}`};
+			}else{
+				Helper.ReportingError(null, `File not accessible: ${CurrentImage.path}`, "Filesystem", "getPicture", "", false);
+				return null;
+			}
 		}
 		return null;
 	}catch(err){
@@ -92,13 +97,15 @@ export async function updatePictureList(Helper: GlobalHelper): Promise<FSPicture
 		}
 
 		// Fillup picture information
-		await Promise.all(CurrentImages.map(async CurrentImage => {
-			const fileInfo = await getPictureInformation(Helper, CurrentImage.path);
-			fileInfo?.info1 ? CurrentImage.info1 = fileInfo?.info1 : CurrentImage.info1 = "";
-			fileInfo?.info2 ? CurrentImage.info2 = fileInfo?.info2 : CurrentImage.info2 = "";
-			fileInfo?.info3 ? CurrentImage.info3 = fileInfo?.info3 : CurrentImage.info3 = "";
-			fileInfo?.date ? CurrentImage.date = fileInfo?.date : CurrentImage.date = null;
-		}))
+		if (CurrentImages.length > 0) {
+			await Promise.all(CurrentImages.map(async CurrentImage => {
+				const fileInfo = await getPictureInformation(Helper, CurrentImage.path);
+				fileInfo?.info1 ? CurrentImage.info1 = fileInfo?.info1 : CurrentImage.info1 = "";
+				fileInfo?.info2 ? CurrentImage.info2 = fileInfo?.info2 : CurrentImage.info2 = "";
+				fileInfo?.info3 ? CurrentImage.info3 = fileInfo?.info3 : CurrentImage.info3 = "";
+				fileInfo?.date ? CurrentImage.date = fileInfo?.date : CurrentImage.date = null;
+			}))
+		}
 
 		// Images found ?
 		if (!(CurrentImages.length > 0)){

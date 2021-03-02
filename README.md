@@ -148,6 +148,11 @@ The following configuration options exist:
 	### __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (Gaudes) Fix empty result (Sentry #2)
+* (Gaudes) Fix file-not-found (Sentry #1)
+* (Gaudes) Include Dependabot updates
+
 ### 0.1.0 (2021-02-26)
 * (Gaudes) Prepare for beta tests
 * (Gaudes) Include Dependabot updates
