@@ -1,6 +1,16 @@
 ![Logo](admin/diashow.png)
 # ioBroker.diashow
 
+## Achtung: Adapter wurde umbenannt !!!
+Die neue Version gibt es hier: <br/>
+https://github.com/gaudes/ioBroker.slideshow
+
+## Attention: Adapter is renamed !!!
+New Version is available here: <br/>
+https://github.com/gaudes/ioBroker.slideshow
+
+<br/><br/><br/><br/>
+
 [![NPM version](http://img.shields.io/npm/v/iobroker.diashow.svg)](https://www.npmjs.com/package/iobroker.diashow)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.diashow.svg)](https://www.npmjs.com/package/iobroker.diashow)
 ![Number of Installations (latest)](https://iobroker.live/badges/diashow-installed.svg)
